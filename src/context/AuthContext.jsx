@@ -11,6 +11,7 @@ import {
     signInWithPopup,
     signOut,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -21,6 +22,7 @@ const AuthContextProvider = ({ children }) => {
     const [registerUsername, setRegisterUsername] = useState("");
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
+    const navigate = useNavigate();
     const toastStyle = {
         position: "top-center",
         autoClose: 3000,
@@ -40,6 +42,7 @@ const AuthContextProvider = ({ children }) => {
         setRegisterPassword("");
         setRegisterUsername("");
         toast.success("Registered Successfully!", toastStyle);
+        navigate("/login");
     };
 
     const forgetPassword = async email => {
@@ -67,6 +70,7 @@ const AuthContextProvider = ({ children }) => {
         setLoginEmail("");
         setLoginPassword("");
         toast.success("Login Successful !", toastStyle);
+        navigate("/");
     };
 
     const userObserver = setCurrentUser => {
