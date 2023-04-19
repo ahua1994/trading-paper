@@ -50,7 +50,7 @@ const Register = () => {
                     <Typography style={{ marginTop: "2rem", textAlign: "center" }}>
                         Already have an account?{" "}
                         <span
-                            style={{ cursor: "pointer", color: "dodgerblue" }}
+                            style={{ cursor: "pointer", color: "orange" }}
                             onClick={() => navigate("/login")}
                         >
                             Login Here!

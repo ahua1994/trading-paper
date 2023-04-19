@@ -8,11 +8,13 @@
             .left{
                 display: flex; 
                 align-items: center;
+                cursor: pointer;
             }
             .right{
                 display: flex;
                 p {
                     margin-left: 1rem; 
+                    cursor: pointer;
                 }
             }
         }

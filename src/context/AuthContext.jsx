@@ -22,6 +22,7 @@ const AuthContextProvider = ({ children }) => {
     const [registerUsername, setRegisterUsername] = useState("");
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
+    const [forgot, setForgot] = useState(false);
     const navigate = useNavigate();
     const toastStyle = {
         position: "top-center",
@@ -45,9 +46,12 @@ const AuthContextProvider = ({ children }) => {
         navigate("/login");
     };
 
-    const forgetPassword = async email => {
+    const forgetPassword = async (e, email) => {
+        e.preventDefault();
         try {
             await sendPasswordResetEmail(auth, email);
+            setLoginEmail("");
+            setForgot(false);
             return toast.success("Please Check Your Inbox", toastStyle);
         } catch (err) {
             return toast.error(err.message.replace("Firebase:", ""), toastStyle);
@@ -94,11 +98,13 @@ const AuthContextProvider = ({ children }) => {
                 registerEmail,
                 registerPassword,
                 currentUser,
+                forgot,
                 setLoginEmail,
                 setLoginPassword,
                 setRegisterUsername,
                 setRegisterEmail,
                 setRegisterPassword,
+                setForgot,
                 handleLogin,
                 handleRegister,
                 signInProvider,

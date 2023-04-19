@@ -8,52 +8,54 @@ const Login = () => {
     const {
         loginEmail,
         loginPassword,
+        forgot,
         setLoginEmail,
         setLoginPassword,
+        setForgot,
         handleLogin,
         signInProvider,
         forgetPassword,
     } = useContext(AuthContext);
+
     const navigate = useNavigate();
-    const [forgot, setForgot] = useState(false);
+
     useEffect(() => {
         setLoginEmail("");
         setLoginPassword("");
     }, []);
+
     return (
         <div className="Login">
             {forgot ? (
-                <Box>
-                    <Typography sx={{ fontSize: "2rem" }}>Retrieve Password</Typography>
-                    <TextField
-                        value={loginEmail}
-                        onChange={e => setLoginEmail(e.target.value)}
-                        variant="filled"
-                        label="Email"
-                    ></TextField>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        onClick={e => {
-                            e.preventDefault();
-                            forgetPassword(loginEmail);
-                            setLoginEmail("");
-                            setForgot(false);
-                        }}
-                    >
-                        Send Password
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={e => {
-                            e.preventDefault();
-                            setLoginEmail("");
-                            setForgot(false);
-                        }}
-                    >
-                        Return
-                    </Button>
-                </Box>
+                <form
+                    onSubmit={e => {
+                        forgetPassword(e, loginEmail);
+                    }}
+                >
+                    <Box>
+                        <Typography sx={{ fontSize: "2rem" }}>Retrieve Password</Typography>
+                        <TextField
+                            value={loginEmail}
+                            onChange={e => setLoginEmail(e.target.value)}
+                            variant="filled"
+                            label="Email"
+                            required
+                        ></TextField>
+                        <Button variant="contained" color="success" type="submit">
+                            Send Password
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={e => {
+                                e.preventDefault();
+                                setLoginEmail("");
+                                setForgot(false);
+                            }}
+                        >
+                            Return
+                        </Button>
+                    </Box>
+                </form>
             ) : (
                 <form onSubmit={handleLogin}>
                     <Box>
@@ -68,7 +70,7 @@ const Login = () => {
                         <Typography>
                             Forgot Your Password?{" "}
                             <span
-                                style={{ cursor: "pointer", color: "dodgerblue" }}
+                                style={{ cursor: "pointer", color: "orange" }}
                                 onClick={() => {
                                     setLoginEmail("");
                                     setLoginPassword("");
@@ -88,7 +90,7 @@ const Login = () => {
                         <Typography>
                             Don't have an account?{" "}
                             <span
-                                style={{ cursor: "pointer", color: "dodgerblue" }}
+                                style={{ cursor: "pointer", color: "orange" }}
                                 onClick={() => navigate("/register")}
                             >
                                 Register Here!
