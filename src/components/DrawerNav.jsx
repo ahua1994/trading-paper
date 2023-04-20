@@ -16,9 +16,17 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
-import { AccessTimeFilled, AutoStories, House, LocalAtm, ShowChart } from "@mui/icons-material";
+import { useContext, useState, useEffect } from "react";
+import {
+    AccessTimeFilled,
+    AccountCircle,
+    AutoStories,
+    House,
+    LocalAtm,
+    ShowChart,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const drawerWidth = 240;
 
@@ -50,7 +58,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function PersistentDrawerLeft() {
     const theme = useTheme();
+    const { currentUser, logout, userObserver, setCurrentUser } = useContext(AuthContext);
     const [open, setOpen] = useState(false);
+
+    useEffect(() => userObserver(setCurrentUser), []);
+
     const navigate = useNavigate();
 
     const handleDrawerOpen = () => {
@@ -85,14 +97,29 @@ export default function PersistentDrawerLeft() {
                             Trading Paper
                         </Typography>
                     </div>
-                    <div className="right">
-                        <Typography noWrap onClick={() => navigate("/login")}>
-                            Sign In
-                        </Typography>
-                        <Typography noWrap onClick={() => navigate("/register")}>
-                            Register
-                        </Typography>
-                    </div>
+                    {currentUser ? (
+                        <div className="right">
+                            <Typography>Welcome, {currentUser.displayName} </Typography>
+                            <AccountCircle />
+                            <Typography
+                                onClick={() => {
+                                    logout();
+                                    navigate("/");
+                                }}
+                            >
+                                Sign Out
+                            </Typography>
+                        </div>
+                    ) : (
+                        <div className="right">
+                            <Typography noWrap onClick={() => navigate("/login")}>
+                                Sign In
+                            </Typography>
+                            <Typography noWrap onClick={() => navigate("/register")}>
+                                Register
+                            </Typography>
+                        </div>
+                    )}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -118,7 +145,7 @@ export default function PersistentDrawerLeft() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <ListItem disablePadding>
+                    <ListItem onClick={() => navigate("/")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <House />
@@ -126,15 +153,15 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary="Home" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem disablePadding>
+                    <ListItem onClick={() => navigate("/quotes")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <LocalAtm />
                             </ListItemIcon>
-                            <ListItemText primary="Purchase" />
+                            <ListItemText primary="Quotes" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem disablePadding>
+                    <ListItem onClick={() => navigate("/charts")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <ShowChart />
@@ -142,7 +169,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary="Charts" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem disablePadding>
+                    <ListItem onClick={() => navigate("/portfolio")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <AutoStories />
@@ -150,7 +177,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary="Portfolio" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem disablePadding>
+                    <ListItem onClick={() => navigate("/history")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <AccessTimeFilled />

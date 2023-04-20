@@ -85,6 +85,7 @@ const Login = () => {
                             onChange={e => setLoginPassword(e.target.value)}
                             variant="filled"
                             label="Password"
+                            type="password"
                             required
                         ></TextField>
                         <Typography>
