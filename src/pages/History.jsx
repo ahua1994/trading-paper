@@ -1,3 +1,4 @@
+import "./History.scss";
 import * as React from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
@@ -17,6 +18,7 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import { Typography } from "@mui/material";
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -107,6 +109,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         ".MuiBox-root": {
             button: {
                 color: "white",
+                "&:disabled": {
+                    color: "#444",
+                },
             },
         },
     },
@@ -130,9 +135,10 @@ const rows = [
     createData("Marshmallow", 318, 0),
     createData("Nougat", 360, 19.0),
     createData("Oreo", 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
+];
+// .sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
-export default function CustomPaginationActionsTable() {
+export default function History() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -149,62 +155,71 @@ export default function CustomPaginationActionsTable() {
     };
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                        <StyledTableCell align="right">Calories</StyledTableCell>
-                        <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                        {/* <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell> */}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {(rowsPerPage > 0
-                        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : rows
-                    ).map(row => (
-                        <StyledTableRow key={row.name}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.name}
-                            </StyledTableCell>
-                            <StyledTableCell style={{ width: 160 }} align="right">
-                                {row.calories}
-                            </StyledTableCell>
-                            <StyledTableCell style={{ width: 160 }} align="right">
-                                {row.fat}
-                            </StyledTableCell>
-                        </StyledTableRow>
-                    ))}
+        <div className="History">
+            <Typography variant="h4">Transaction History</Typography>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
+                            <StyledTableCell align="right">Calories</StyledTableCell>
+                            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
+                            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
+                            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {(rowsPerPage > 0
+                            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : rows
+                        ).map(row => (
+                            <StyledTableRow key={row.name}>
+                                <StyledTableCell component="th" scope="row">
+                                    {row.name}
+                                </StyledTableCell>
+                                <StyledTableCell style={{ width: 160 }} align="right">
+                                    {row.calories}
+                                </StyledTableCell>
+                                <StyledTableCell style={{ width: 160 }} align="right">
+                                    {row.fat}
+                                </StyledTableCell>
+                                <StyledTableCell style={{ width: 160 }} align="right">
+                                    0
+                                </StyledTableCell>
+                                <StyledTableCell style={{ width: 160 }} align="right">
+                                    0
+                                </StyledTableCell>
+                            </StyledTableRow>
+                        ))}
 
-                    {emptyRows > 0 && (
-                        <StyledTableRow style={{ height: 53 * emptyRows }}>
-                            <StyledTableCell colSpan={6} />
+                        {emptyRows > 0 && (
+                            <StyledTableRow style={{ height: 53 * emptyRows }}>
+                                <StyledTableCell colSpan={6} />
+                            </StyledTableRow>
+                        )}
+                    </TableBody>
+                    <TableFooter>
+                        <StyledTableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                                colSpan={6}
+                                count={rows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                    inputProps: {
+                                        "aria-label": "rows per page",
+                                    },
+                                    native: true,
+                                }}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                            />
                         </StyledTableRow>
-                    )}
-                </TableBody>
-                <TableFooter>
-                    <StyledTableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                            colSpan={3}
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {
-                                    "aria-label": "rows per page",
-                                },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
-                    </StyledTableRow>
-                </TableFooter>
-            </Table>
-        </TableContainer>
+                    </TableFooter>
+                </Table>
+            </TableContainer>
+        </div>
     );
 }

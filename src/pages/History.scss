@@ -1,0 +1,16 @@
+.History{   
+    h4{
+        margin: 2rem 0; 
+    }
+    .MuiTableContainer-root{ 
+        display: flex;
+        justify-content: center;
+        background-color: #03222c; 
+        box-shadow: none;
+        .MuiTable-root{
+            border-radius: 5px;
+            overflow: hidden;
+            width: 50%; 
+        } 
+    } 
+}

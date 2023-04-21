@@ -3,14 +3,30 @@ import "./Quotes.scss";
 import { useState } from "react";
 
 const Quotes = () => {
-    // https://cloud-sse.iexapis.com/stable/stock/nflx/quote?token=API_KEY
-    // const baseUrl = "https://cloud-sse.iexapis.com/stable/stock/nflx/quote?token=";
-    const [ticker, setTicker] = useState("");
-    // const [results, setResults] = useState([]);
+    // https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo single quote
+
+    const [search, setSearch] = useState("");
+    const [result, setResult] = useState([]);
+
+    const getResults = async search => {
+        try {
+            await fetch(
+                `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${search}&apikey=${process.env.API_KEY}`
+            )
+                .then(x => x.json())
+                .then(x => setResult(x));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleSubmit = e => {
         e.preventDefault();
-        setTicker("");
+        getResults(search);
+        setSearch("");
     };
+
+    console.log(result);
 
     return (
         <div className="Quotes">
@@ -18,16 +34,19 @@ const Quotes = () => {
                 <Typography variant="h4">Quotes</Typography>
                 <TextField
                     id="filled-search"
-                    label="Ticker/Symbol"
+                    label="Keyword/Symbol"
                     type="search"
                     variant="filled"
-                    value={ticker}
-                    onChange={e => setTicker(e.target.value)}
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
                 />
                 <Button type="submit" variant="contained" color="success">
                     Search
                 </Button>
             </form>
+            {result?.bestMatches?.map((x, i) => (
+                <h1 key={i}>{x["2. name"]}</h1>
+            ))}
         </div>
     );
 };
