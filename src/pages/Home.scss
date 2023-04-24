@@ -1,0 +1,14 @@
+.Home{
+    display: flex;
+    justify-content: center;
+    .market-status{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;  
+        gap: 4rem;
+        margin: 3rem 0;
+        .Status{
+            width: 390px;
+            background-color: #232a2d;
+        }
+    }
+}
