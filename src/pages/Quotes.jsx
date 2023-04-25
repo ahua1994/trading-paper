@@ -1,6 +1,7 @@
 import { TextField, Button, Typography } from "@mui/material";
 import "./Quotes.scss";
 import { useState } from "react";
+import Result from "../components/Result";
 
 const Quotes = () => {
     // https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo single quote
@@ -26,8 +27,6 @@ const Quotes = () => {
         setSearch("");
     };
 
-    console.log(result);
-
     return (
         <div className="Quotes">
             <form onSubmit={handleSubmit}>
@@ -44,9 +43,11 @@ const Quotes = () => {
                     Search
                 </Button>
             </form>
-            {result?.bestMatches?.map((x, i) => (
-                <h1 key={i}>{x["2. name"]}</h1>
-            ))}
+            <div className="results">
+                {result?.bestMatches?.map((x, i) => (
+                    <Result x={x} key={i} />
+                ))}
+            </div>
         </div>
     );
 };

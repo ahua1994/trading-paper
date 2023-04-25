@@ -15,6 +15,7 @@ const Home = () => {
     }, []);
     return (
         <div className="Home">
+            <h1>Global Market Status</h1>
             <div className="market-status">
                 {markets.map((market, i) => (
                     <MarketStatus key={i} market={market} />

@@ -1,14 +1,46 @@
 .Home{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center; 
     .market-status{
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;  
         gap: 4rem;
         margin: 3rem 0;
+        h3{
+            margin-top: 0;
+            img{
+                width: 40px;
+                transform: translate(1rem,4px);
+                border:  1px solid white;
+            }
+        }
+        span{
+            padding: 5px;
+            border-radius: 5px;
+        }
+        p{
+            margin: 10px 0;
+        }
         .Status{
             width: 390px;
-            background-color: #232a2d;
+            height: 300px;
+            background-color: #051318;
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            .exchanges{  
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                span{
+                    border: 1px solid goldenrod; 
+                    margin: 0 3px; 
+                    color: goldenrod; 
+                    margin-bottom: 10px;
+                }
+            }
         }
     }
 }
