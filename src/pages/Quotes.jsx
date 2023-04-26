@@ -7,6 +7,7 @@ const Quotes = () => {
     // https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo single quote
 
     const [search, setSearch] = useState("");
+    const [prev, setPrev] = useState("");
     const [result, setResult] = useState([]);
 
     const getResults = async search => {
@@ -23,6 +24,7 @@ const Quotes = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        setPrev(search ? `Search Results for "${search}" : ` : search);
         getResults(search);
         setSearch("");
     };
@@ -43,6 +45,12 @@ const Quotes = () => {
                     Search
                 </Button>
             </form>
+            {prev && (
+                <h2>
+                    {result?.bestMatches?.length}{" "}
+                    {result?.bestMatches?.length !== 1 ? prev : prev.replace("Results", "Result")}
+                </h2>
+            )}
             <div className="results">
                 {result?.bestMatches?.map((x, i) => (
                     <Result x={x} key={i} />
