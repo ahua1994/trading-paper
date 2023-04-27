@@ -1,5 +1,29 @@
 .StockData{
-    h1{
-        color: honeydew;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .stats{
+        width: 80%; 
+        &_table{ 
+            display: grid;
+            grid-template-columns:  1fr 1fr 1fr 1fr; 
+            p{
+                span{
+                    color: white;
+                }
+            }
+        }
+        &_header{
+            display: flex; 
+            justify-content: space-between;
+            align-items: flex-end;
+            h1,p{
+                margin: 0;
+                span{
+                    font-size: 1.5rem;
+                }
+            }
+        }
     }
 }

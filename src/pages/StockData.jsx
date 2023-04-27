@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import getSymbolFromCurrency from "currency-symbol-map";
 import "./StockData.scss";
 import { Button } from "@mui/material";
 import { useEffect } from "react";
@@ -20,25 +21,58 @@ const StockData = () => {
     return (
         <div className="StockData">
             {quote && (
-                <div>
-                    <h1>{symbol}</h1>
-                    <p>{quote.name}</p>
-                    <p>avg volume: {quote.average_volume}</p>
-                    <p>change: {quote.change}</p>
-                    <p>currency: {quote.currency}</p>
-                    <p>datetime: {quote.datetime}</p>
-                    <p>exchange: {quote.exchange}</p>
-                    <p>high: {quote.high}</p>
-                    <p>low: {quote.low}</p>
-                    <p>open: {quote.open}</p>
-                    <p>close: {quote.close}</p>
-                    <p>percent_change: {quote.percent_change}</p>
-                    <p>previous_close: {quote.previous_close}</p>
-                    <p>volume: {quote.volume}</p>
-                    <p>52week: {Object.entries(quote.fifty_two_week).join(" ")}</p>
+                <div className="stats">
+                    <div className="stats_header">
+                        <h1>
+                            {symbol}
+                            <span> ({quote.exchange}) </span>
+                        </h1>
+                        <h1>{quote.name}</h1>
+                    </div>
+                    <hr></hr>
+                    <div className="stats_table">
+                        <p>volume: </p>
+                        <p>{quote.volume}</p>
+                        <p>avg volume: </p>
+                        <p>{quote.average_volume}</p>
+                        <p>
+                            <span>change:</span>
+                        </p>
+                        <p style={{ color: +quote.change > 0 ? "green" : "red" }}>
+                            {(+quote.change).toFixed(2)}
+                        </p>
+                        <p>
+                            <span>percent_change: </span>
+                        </p>
+                        <p style={{ color: +quote.percent_change > 0 ? "green" : "red" }}>
+                            {quote.percent_change} <span>%</span>
+                        </p>
+                        <p>currency:</p>
+                        <p>
+                            {getSymbolFromCurrency(quote.currency)} {quote.currency}
+                        </p>
+                        <p>datetime: </p>
+                        <p>{quote.datetime}</p>
+                        <p>high: </p>
+                        <p>{(+quote.high).toFixed(2)}</p>
+                        <p>low: </p>
+                        <p>{(+quote.low).toFixed(2)}</p>
+                        <p>status: </p>
+                        <p>{String(quote.is_market_open)}</p>
+                        <p>is open: </p>
+                        <p>{(+quote.open).toFixed(2)}</p>
+                        <p>close: </p>
+                        <p>{(+quote.close).toFixed(2)}</p>
+                        <p>previous_close: </p>
+                        <p>{(+quote.previous_close).toFixed(2)}</p>
+                    </div>
+                    <p>
+                        52week:
+                        {Object.entries(quote.fifty_two_week).join(" ")}
+                    </p>
                 </div>
             )}
-            <Button variant="contained" color="secondary" onClick={() => navigate(-1)}>
+            <Button variant="contained" color="secondary" onClick={() => navigate("/quotes")}>
                 Go Back
             </Button>
         </div>

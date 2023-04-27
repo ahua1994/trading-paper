@@ -17,9 +17,11 @@ const Home = () => {
         <div className="Home">
             <h1>Global Market Status</h1>
             <div className="market-status">
-                {markets.map((market, i) => (
-                    <MarketStatus key={i} market={market} />
-                ))}
+                {markets
+                    ? markets?.map((market, i) => <MarketStatus key={i} market={market} />)
+                    : ["", "Limit of 5 Calls/Min Reached. Try Again Later."].map((x, i) => (
+                          <h1 key={i}>{x}</h1>
+                      ))}
             </div>
         </div>
     );
