@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Error from "./pages/Error";
 import Home from "./pages/Home";
+import StockData from "./pages/StockData";
 
 function App() {
     return (
@@ -26,7 +27,10 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />}></Route>
-                            <Route path="/quotes" element={<Quotes />}></Route>
+                            <Route path="/quotes" element={<Quotes />} />
+                            <Route path="/quote">
+                                <Route path=":symbol" element={<StockData />}></Route>
+                            </Route>
                             <Route path="/register" element={<Register />} />
                             <Route path="/history" element={<History />} />
                             <Route path="/portfolio" element={<Portfolio />} />

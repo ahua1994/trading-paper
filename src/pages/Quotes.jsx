@@ -4,19 +4,16 @@ import { useState } from "react";
 import Result from "../components/Result";
 
 const Quotes = () => {
-    // https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=demo single quote
-
     const [search, setSearch] = useState("");
     const [prev, setPrev] = useState("");
     const [result, setResult] = useState([]);
+    const [range, setRange] = useState(5);
 
     const getResults = async search => {
         try {
-            await fetch(
-                `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${search}&apikey=${process.env.API_KEY}`
-            )
+            await fetch(`https://api.twelvedata.com/symbol_search?symbol=${search}&source=docs`)
                 .then(x => x.json())
-                .then(x => setResult(x));
+                .then(x => setResult(search === "" ? [] : x.data));
         } catch (error) {
             console.log(error);
         }
@@ -26,6 +23,7 @@ const Quotes = () => {
         e.preventDefault();
         setPrev(search ? `Search Results for "${search}" : ` : search);
         getResults(search);
+        setRange(5);
         setSearch("");
     };
 
@@ -47,14 +45,19 @@ const Quotes = () => {
             </form>
             {prev && (
                 <h2>
-                    {result?.bestMatches?.length}{" "}
-                    {result?.bestMatches?.length !== 1 ? prev : prev.replace("Results", "Result")}
+                    {result?.length}{" "}
+                    {result?.length !== 1 ? prev : prev.replace("Results", "Result")}
                 </h2>
             )}
             <div className="results">
-                {result?.bestMatches?.map((x, i) => (
+                {result?.slice(0, range).map((x, i) => (
                     <Result x={x} key={i} />
                 ))}
+                {range < result.length && (
+                    <Button onClick={() => setRange(range + 5)} variant="contained" color="success">
+                        Show More
+                    </Button>
+                )}
             </div>
         </div>
     );

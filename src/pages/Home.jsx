@@ -8,7 +8,7 @@ const Home = () => {
     const [markets, setMarkets] = useState([]);
     useEffect(() => {
         fetch(
-            `https://www.alphavantage.co/query?function=MARKET_STATUS&apikey=${process.env.API_KEY}`
+            `https://www.alphavantage.co/query?function=MARKET_STATUS&apikey=${process.env.REACT_APP_ALPHA_KEY}`
         )
             .then(x => x.json())
             .then(x => setMarkets(x.markets));
