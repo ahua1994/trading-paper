@@ -100,7 +100,7 @@ export default function PersistentDrawerLeft() {
                     {currentUser ? (
                         <div className="right">
                             <Typography sx={{ marginRight: "1rem" }}>
-                                Welcome, {currentUser.displayName}{" "}
+                                Welcome, {currentUser.displayName} !
                             </Typography>
                             <AccountCircle />
                             <Typography

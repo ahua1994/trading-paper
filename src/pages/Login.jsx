@@ -2,6 +2,7 @@ import "./Login.scss";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import google from "../helpers/google.png";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -97,6 +98,15 @@ const Login = () => {
                                 Register Here!
                             </span>
                         </Typography>
+                        <Button
+                            size="large"
+                            style={{ marginTop: "2rem", backgroundColor: "#333" }}
+                            variant="contained"
+                            onClick={signInProvider}
+                        >
+                            <img style={{ width: "25px" }} src={google} alt="g-icon"></img>
+                            &nbsp;&nbsp;&nbsp;&nbsp; Continue With Google
+                        </Button>
                         <Button type="submit" variant="contained" color="success">
                             Login
                         </Button>
