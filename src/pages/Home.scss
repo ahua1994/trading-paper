@@ -44,3 +44,18 @@
         }
     }
 }
+
+@media screen and (max-width: 1500px) {
+    .Home{
+        .market-status{
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+}
+@media screen and (max-width: 1000px) {
+    .Home{
+        .market-status{
+            grid-template-columns: 1fr;
+        }
+    }
+}

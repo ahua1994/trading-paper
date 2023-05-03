@@ -52,7 +52,7 @@ const AuthContextProvider = ({ children }) => {
         setRegisterPassword("");
         setRegisterUsername("");
         toast.success("Registered Successfully!", toastStyle);
-        navigate("/login");
+        navigate("/");
     };
 
     const forgetPassword = async (e, email) => {
@@ -73,9 +73,7 @@ const AuthContextProvider = ({ children }) => {
             await signInWithPopup(auth, provider);
             const docRef = doc(db, "portfolios", auth.currentUser.email);
             const profile = await getDoc(docRef);
-            console.log(profile);
             if (!profile.exists()) {
-                console.log("does not exist", profile);
                 await setDoc(docRef, {
                     uid: auth.currentUser.uid,
                     cash: 10000,
@@ -84,8 +82,6 @@ const AuthContextProvider = ({ children }) => {
                     joined: new Date(),
                     username: auth.currentUser.displayName,
                 });
-            } else {
-                console.log("exists", profile);
             }
         } catch (err) {
             console.log(err.message);

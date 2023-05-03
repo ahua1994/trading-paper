@@ -19,6 +19,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { Typography } from "@mui/material";
+import { PortfolioContext } from "../context/PortfolioContext";
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -141,6 +142,7 @@ const rows = [
 export default function History() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const { open } = React.useContext(PortfolioContext);
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -155,7 +157,7 @@ export default function History() {
     };
 
     return (
-        <div className="History">
+        <div className="History" style={{ marginLeft: open ? "240px" : "0" }}>
             <Typography variant="h4">Transaction History</Typography>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">

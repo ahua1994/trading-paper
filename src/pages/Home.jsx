@@ -1,10 +1,12 @@
 import "./Home.scss";
 import { useContext, useEffect, useState } from "react";
+import { PortfolioContext } from "../context/PortfolioContext";
 import { AuthContext } from "../context/AuthContext";
 import MarketStatus from "../components/MarketStatus";
 
 const Home = () => {
     const { currentUser } = useContext(AuthContext);
+    const { open } = useContext(PortfolioContext);
     const [markets, setMarkets] = useState([]);
     useEffect(() => {
         fetch(
@@ -14,7 +16,7 @@ const Home = () => {
             .then(x => setMarkets(x.markets));
     }, []);
     return (
-        <div className="Home">
+        <div className="Home" style={{ marginLeft: open ? "240px" : "0" }}>
             <h1>Global Market Status</h1>
             <div className="market-status">
                 {markets

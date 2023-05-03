@@ -27,6 +27,7 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { PortfolioContext } from "../context/PortfolioContext";
 
 const drawerWidth = 240;
 
@@ -59,9 +60,23 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export default function PersistentDrawerLeft() {
     const theme = useTheme();
     const { currentUser, logout, userObserver, setCurrentUser } = useContext(AuthContext);
-    const [open, setOpen] = useState(false);
+    const { open, setOpen } = useContext(PortfolioContext);
 
     useEffect(() => userObserver(setCurrentUser), []);
+
+    // useEffect(() => {
+    //     const updateViewport = () => {
+    //         const viewport = document.querySelector('meta[name="viewport"]');
+    //         console.log(viewport);
+    //         if (viewport) {
+    //             viewport.setAttribute(
+    //                 "content",
+    //                 `width=${open ? `${window.innerWidth - drawerWidth}` : "device-width"}`
+    //             );
+    //         }
+    //     };
+    //     updateViewport();
+    // }, [open]);
 
     const navigate = useNavigate();
 

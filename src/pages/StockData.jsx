@@ -6,13 +6,15 @@ import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { PortfolioContext } from "../context/PortfolioContext";
+import { toast } from "react-toastify";
 
 const StockData = () => {
     const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
-    const { buy, sell } = useContext(PortfolioContext);
+    const { buy, sell, open, toastStyle } = useContext(PortfolioContext);
     const { symbol } = useParams();
     const [quote, setQuote] = useState();
+    const [price, setPrice] = useState(0);
 
     useEffect(() => {
         fetch(
@@ -20,16 +22,23 @@ const StockData = () => {
         )
             .then(x => x.json())
             .then(x => setQuote(x.status === "error" ? null : x));
+        fetch(
+            `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${process.env.REACT_APP_TWELVEDATA_KEY}&source=docs`
+        )
+            .then(x => x.json())
+            .then(x => setPrice(+x.price));
     }, []);
 
     const red = "rgb(255, 50, 50)";
     const grn = "rgb(89, 255, 89)";
     const f2w = quote?.fifty_two_week;
 
-    const handlePurchase = stock => {};
+    const handlePurchase = stock => {
+        console.log("buy");
+    };
 
     return (
-        <div className="StockData">
+        <div className="StockData" style={{ marginLeft: open ? "240px" : "0" }}>
             {quote && (
                 <>
                     <div className="stats">
@@ -63,7 +72,7 @@ const StockData = () => {
                                 {getSymbolFromCurrency(quote.currency)} {quote.currency}
                             </p>
                             <p>Current</p>
-                            <p>???</p>
+                            <p>{price.toFixed(2)}</p>
                             <p>Change</p>
                             <p
                                 style={{
@@ -101,7 +110,15 @@ const StockData = () => {
                         </div>
                     </div>
                     <div className="action">
-                        <Button variant="contained" color="success">
+                        <Button
+                            variant="contained"
+                            color="success"
+                            onClick={() =>
+                                currentUser
+                                    ? handlePurchase()
+                                    : toast.error("Login To Buy Stocks", toastStyle)
+                            }
+                        >
                             Buy
                         </Button>
                         <Button variant="contained" color="error">

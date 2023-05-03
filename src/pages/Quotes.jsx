@@ -1,13 +1,15 @@
 import { TextField, Button, Typography } from "@mui/material";
 import "./Quotes.scss";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Result from "../components/Result";
+import { PortfolioContext } from "../context/PortfolioContext";
 
 const Quotes = () => {
     const [search, setSearch] = useState("");
     const [prev, setPrev] = useState("");
     const [result, setResult] = useState([]);
     const [range, setRange] = useState(5);
+    const { open } = useContext(PortfolioContext);
 
     const getResults = async search => {
         try {
@@ -28,7 +30,7 @@ const Quotes = () => {
     };
 
     return (
-        <div className="Quotes">
+        <div className="Quotes" style={{ marginLeft: open ? "240px" : "0" }}>
             <form onSubmit={handleSubmit}>
                 <Typography variant="h4">Quotes</Typography>
                 <TextField

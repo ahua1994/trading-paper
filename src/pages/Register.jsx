@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { PortfolioContext } from "../context/PortfolioContext";
 
 const Register = () => {
     const {
@@ -14,13 +15,14 @@ const Register = () => {
         handleRegister,
     } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { open } = useContext(PortfolioContext);
     useEffect(() => {
         setRegisterUsername("");
         setRegisterEmail("");
         setRegisterPassword("");
     }, []);
     return (
-        <div className="Login">
+        <div className="Login" style={{ marginLeft: open ? "240px" : "0" }}>
             <form onSubmit={handleRegister}>
                 <Box>
                     <Typography sx={{ fontSize: "2rem" }}>Register</Typography>

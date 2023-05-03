@@ -8,12 +8,16 @@ export const PortfolioContext = createContext();
 
 const PortfolioContextProvider = ({ children }) => {
     const navigate = useNavigate();
+
+    const [open, setOpen] = useState(false);
+
     const toastStyle = {
         position: "top-center",
         autoClose: 3000,
         theme: "dark",
         hideProgressBar: true,
     };
+
     const buy = async (obj, uid) => {
         if (!uid) {
             toast("Login To Purchase", toastStyle);
@@ -22,8 +26,14 @@ const PortfolioContextProvider = ({ children }) => {
         console.log("bought");
         const docRef = doc(db, "/stocks/" + obj.postId);
     };
+
     const sell = () => {};
-    return <PortfolioContext.Provider value={{ buy, sell }}>{children}</PortfolioContext.Provider>;
+
+    return (
+        <PortfolioContext.Provider value={{ buy, sell, open, setOpen, toastStyle }}>
+            {children}
+        </PortfolioContext.Provider>
+    );
 };
 
 export default PortfolioContextProvider;

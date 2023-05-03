@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import google from "../helpers/google.png";
 import { useNavigate } from "react-router-dom";
+import { PortfolioContext } from "../context/PortfolioContext";
 
 const Login = () => {
     const {
@@ -17,6 +18,7 @@ const Login = () => {
         signInProvider,
         forgetPassword,
     } = useContext(AuthContext);
+    const { open } = useContext(PortfolioContext);
 
     const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ const Login = () => {
     }, []);
 
     return (
-        <div className="Login">
+        <div className="Login" style={{ marginLeft: open ? "240px" : "0" }}>
             {forgot ? (
                 <form
                     onSubmit={e => {
