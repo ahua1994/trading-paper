@@ -100,7 +100,7 @@ const Login = () => {
                         </Typography>
                         <Button
                             size="large"
-                            style={{ marginTop: "2rem", backgroundColor: "#333" }}
+                            style={{ marginTop: "2rem", backgroundColor: "#051318" }}
                             variant="contained"
                             onClick={signInProvider}
                         >

@@ -1,4 +1,4 @@
-import { auth } from "../helpers/firebase";
+import { auth, db } from "../helpers/firebase";
 import { toast } from "react-toastify";
 import { createContext, useState } from "react";
 import {
@@ -12,6 +12,7 @@ import {
     signOut,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 
 export const AuthContext = createContext();
 
@@ -36,6 +37,14 @@ const AuthContextProvider = ({ children }) => {
         try {
             await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
             await updateProfile(auth.currentUser, { displayName: registerUsername });
+            await setDoc(doc(collection(db, "portfolios"), auth.currentUser.email), {
+                uid: auth.currentUser.uid,
+                cash: 10000,
+                assets: [],
+                transactions: [],
+                joined: new Date(),
+                username: registerUsername,
+            });
         } catch (err) {
             return toast.error(err.message.replace("Firebase:", ""), toastStyle);
         }
@@ -60,8 +69,30 @@ const AuthContextProvider = ({ children }) => {
 
     const signInProvider = async () => {
         const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
+        try {
+            await signInWithPopup(auth, provider);
+            const docRef = doc(db, "portfolios", auth.currentUser.email);
+            const profile = await getDoc(docRef);
+            console.log(profile);
+            if (!profile.exists()) {
+                console.log("does not exist", profile);
+                await setDoc(docRef, {
+                    uid: auth.currentUser.uid,
+                    cash: 10000,
+                    assets: [],
+                    transactions: [],
+                    joined: new Date(),
+                    username: auth.currentUser.displayName,
+                });
+            } else {
+                console.log("exists", profile);
+            }
+        } catch (err) {
+            console.log(err.message);
+            return toast.error(err.message.replace("Firebase:", ""), toastStyle);
+        }
         toast.success("Login Successful !", toastStyle);
+        navigate("/");
     };
 
     const handleLogin = async e => {
