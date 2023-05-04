@@ -14,8 +14,7 @@ import Register from "./pages/Register";
 import Error from "./pages/Error";
 import Home from "./pages/Home";
 import StockData from "./pages/StockData";
-import Buy from "./pages/Buy";
-import Sell from "./pages/Sell";
+import Action from "./pages/Action";
 
 function App() {
     return (
@@ -33,12 +32,8 @@ function App() {
                             <Route path="/quote">
                                 <Route path=":symbol" element={<StockData />}></Route>
                             </Route>
-                            <Route path="/buy">
-                                <Route path=":symbol" element={<Buy />}></Route>
-                            </Route>
-                            <Route path="/sell">
-                                <Route path=":symbol" element={<Sell />}></Route>
-                            </Route>
+                            <Route path="/buy" element={<Action />} />
+                            <Route path="/sell" element={<Action />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/history" element={<History />} />
                             <Route path="/portfolio" element={<Portfolio />} />

@@ -1,5 +1,5 @@
 import "./StockData.scss";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { Button } from "@mui/material";
 import { useContext, useEffect } from "react";
@@ -106,28 +106,16 @@ const StockData = () => {
                         </div>
                     </div>
                     <div className="action">
-                        <Button
-                            variant="contained"
-                            color="success"
-                            onClick={() =>
-                                currentUser
-                                    ? navigate("/buy/" + symbol)
-                                    : toast.error("Login To Buy Stocks", toastStyle)
-                            }
-                        >
-                            Buy
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="error"
-                            onClick={() =>
-                                currentUser
-                                    ? navigate("/sell/" + symbol)
-                                    : toast.error("Login To Sell Stocks", toastStyle)
-                            }
-                        >
-                            Sell
-                        </Button>
+                        <Link to={"/buy"} state={{ price, ...quote, buy: true }}>
+                            <Button variant="contained" color="success">
+                                Buy
+                            </Button>
+                        </Link>
+                        <Link to={"/sell"} state={{ price, ...quote, buy: false }}>
+                            <Button variant="contained" color="error">
+                                Sell
+                            </Button>
+                        </Link>
                     </div>
                 </>
             )}
