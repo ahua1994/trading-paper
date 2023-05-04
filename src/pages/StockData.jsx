@@ -1,6 +1,6 @@
+import "./StockData.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import getSymbolFromCurrency from "currency-symbol-map";
-import "./StockData.scss";
 import { Button } from "@mui/material";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 const StockData = () => {
     const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
-    const { buy, sell, open, toastStyle } = useContext(PortfolioContext);
+    const { open, toastStyle } = useContext(PortfolioContext);
     const { symbol } = useParams();
     const [quote, setQuote] = useState();
     const [price, setPrice] = useState(0);
@@ -32,10 +32,6 @@ const StockData = () => {
     const red = "rgb(255, 50, 50)";
     const grn = "rgb(89, 255, 89)";
     const f2w = quote?.fifty_two_week;
-
-    const handlePurchase = stock => {
-        console.log("buy");
-    };
 
     return (
         <div className="StockData" style={{ marginLeft: open ? "240px" : "0" }}>
@@ -115,13 +111,21 @@ const StockData = () => {
                             color="success"
                             onClick={() =>
                                 currentUser
-                                    ? handlePurchase()
+                                    ? navigate("/buy/" + symbol)
                                     : toast.error("Login To Buy Stocks", toastStyle)
                             }
                         >
                             Buy
                         </Button>
-                        <Button variant="contained" color="error">
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() =>
+                                currentUser
+                                    ? navigate("/sell/" + symbol)
+                                    : toast.error("Login To Sell Stocks", toastStyle)
+                            }
+                        >
                             Sell
                         </Button>
                     </div>
