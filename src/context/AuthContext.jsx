@@ -42,7 +42,7 @@ const AuthContextProvider = ({ children }) => {
                 cash: 10000,
                 assets: [],
                 transactions: [],
-                joined: new Date().toLocaleDateString(),
+                joined: new Date().toUTCString(),
                 username: registerUsername,
                 email: auth.currentUser.email,
             });
@@ -80,7 +80,7 @@ const AuthContextProvider = ({ children }) => {
                     cash: 10000,
                     assets: [],
                     transactions: [],
-                    joined: new Date().toLocaleDateString(),
+                    joined: new Date().toUTCString(),
                     username: auth.currentUser.displayName,
                     email: auth.currentUser.email,
                 });

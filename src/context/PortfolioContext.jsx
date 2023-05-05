@@ -1,7 +1,15 @@
 import { toast } from "react-toastify";
 import { db, auth } from "../helpers/firebase";
 import { createContext, useState } from "react";
-import { addDoc, setDoc, collection, getDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
+import {
+    getDoc,
+    doc,
+    deleteDoc,
+    onSnapshot,
+    updateDoc,
+    arrayUnion,
+    increment,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 export const PortfolioContext = createContext();
@@ -30,13 +38,32 @@ const PortfolioContextProvider = ({ children }) => {
         }
     };
 
-    const purchase = async (obj, uid) => {
-        if (!uid) {
+    const purchase = async order => {
+        if (!order?.uid) {
             toast("Login To Purchase", toastStyle);
             return navigate("/login");
         }
-        console.log("bought");
-        const docRef = doc(db, "/stocks/" + obj.postId);
+        try {
+            const docRef = doc(db, "portfolios", order.uid);
+            //use arrayUnion,arrayRemove, increment <-- can add or sub
+            // const profile = (await getDoc(docRef)).data();
+            // console.log(profile);
+            console.log(order);
+            await updateDoc(docRef, {
+                assets: arrayUnion({
+                    symbol: order.symbol,
+                    name: order.name,
+                    currency: order.currency,
+                    total: order.total,
+                    quantity: order.quantity,
+                }),
+                transactions: arrayUnion({ ...order }),
+                cash: increment(order.total * -1),
+            });
+        } catch (err) {
+            return toast.error(err.message.replace("Firebase:", ""), toastStyle);
+        }
+        return toast.success("Order Placed!", toastStyle);
     };
 
     const sell = () => {};
