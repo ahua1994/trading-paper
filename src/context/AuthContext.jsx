@@ -37,13 +37,14 @@ const AuthContextProvider = ({ children }) => {
         try {
             await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
             await updateProfile(auth.currentUser, { displayName: registerUsername });
-            await setDoc(doc(collection(db, "portfolios"), auth.currentUser.email), {
+            await setDoc(doc(collection(db, "portfolios"), auth.currentUser.uid), {
                 uid: auth.currentUser.uid,
                 cash: 10000,
                 assets: [],
                 transactions: [],
-                joined: new Date(),
+                joined: new Date().toLocaleDateString(),
                 username: registerUsername,
+                email: auth.currentUser.email,
             });
         } catch (err) {
             return toast.error(err.message.replace("Firebase:", ""), toastStyle);
@@ -71,7 +72,7 @@ const AuthContextProvider = ({ children }) => {
         const provider = new GoogleAuthProvider();
         try {
             await signInWithPopup(auth, provider);
-            const docRef = doc(db, "portfolios", auth.currentUser.email);
+            const docRef = doc(db, "portfolios", auth.currentUser.uid);
             const profile = await getDoc(docRef);
             if (!profile.exists()) {
                 await setDoc(docRef, {
@@ -79,8 +80,9 @@ const AuthContextProvider = ({ children }) => {
                     cash: 10000,
                     assets: [],
                     transactions: [],
-                    joined: new Date(),
+                    joined: new Date().toLocaleDateString(),
                     username: auth.currentUser.displayName,
+                    email: auth.currentUser.email,
                 });
             }
         } catch (err) {

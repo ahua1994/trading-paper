@@ -106,12 +106,15 @@ const StockData = () => {
                         </div>
                     </div>
                     <div className="action">
-                        <Link to={"/buy"} state={{ price, ...quote, buy: true }}>
+                        <Link to={"/buy"} state={{ price: price.toFixed(2), ...quote, buy: true }}>
                             <Button variant="contained" color="success">
                                 Buy
                             </Button>
                         </Link>
-                        <Link to={"/sell"} state={{ price, ...quote, buy: false }}>
+                        <Link
+                            to={"/sell"}
+                            state={{ price: price.toFixed(2), ...quote, buy: false }}
+                        >
                             <Button variant="contained" color="error">
                                 Sell
                             </Button>

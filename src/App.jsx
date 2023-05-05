@@ -27,14 +27,14 @@ function App() {
                         <DrawerNav />
                         <Routes>
                             <Route path="/" element={<Home />} />
-                            <Route path="/login" element={<Login />}></Route>
-                            <Route path="/quotes" element={<Quotes />} />
                             <Route path="/quote">
-                                <Route path=":symbol" element={<StockData />}></Route>
+                                <Route path=":symbol" element={<StockData />} />
                             </Route>
+                            <Route path="/quotes" element={<Quotes />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
                             <Route path="/buy" element={<Action />} />
                             <Route path="/sell" element={<Action />} />
-                            <Route path="/register" element={<Register />} />
                             <Route path="/history" element={<History />} />
                             <Route path="/portfolio" element={<Portfolio />} />
                             <Route path="*" element={<Error />} />
