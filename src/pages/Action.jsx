@@ -7,7 +7,7 @@ import { Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 
 const Action = () => {
-    const { open, purchase, getPortfolio, profile, toastStyle } = useContext(PortfolioContext);
+    const { open, action, getPortfolio, profile, toastStyle } = useContext(PortfolioContext);
     const { currentUser } = useContext(AuthContext);
     const [buying, setBuying] = useState(false);
     const [qty, setQty] = useState("");
@@ -15,8 +15,6 @@ const Action = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // console.log(location.state);
-    console.log(profile);
     useEffect(() => {
         if (!location.state) {
             return navigate("/");
@@ -27,27 +25,21 @@ const Action = () => {
     const quote = location?.state;
     const buy = quote?.buy;
 
-    const handleBuy = e => {
+    const handleOrder = e => {
         e.preventDefault();
-        let total = (quote?.price * qty).toFixed(2);
-        if (total > profile?.cash) return toast.error("Insufficient Funds", toastStyle);
+        let total = Number((quote?.price * +qty).toFixed(2));
+        if (buy && total > profile?.cash) return toast.error("Insufficient Funds", toastStyle);
         let order = {
             symbol: quote?.symbol,
             name: quote?.name,
-            quantity: qty,
+            quantity: +qty,
             date: new Date().toUTCString(),
-            price: quote?.price,
+            price: Number(quote?.price),
             total,
             currency: quote?.currency,
+            action: buy ? "buy" : "sell",
         };
-        purchase(order);
-    };
-    const handleSell = e => {
-        e.preventDefault();
-        // let total = (quote?.price * qty).toFixed(2);
-        // if (total > profile?.cash) return toast.error("Insufficient Funds", toastStyle);
-
-        // console.log("nice")
+        action(order, buy);
     };
 
     return (
@@ -56,8 +48,8 @@ const Action = () => {
             <h1>{quote?.symbol}</h1>
             <h3>{quote?.name}</h3>
             <p>Price: $ {quote?.price} USD</p>
-            <p>Total Cash: $ {profile?.cash} USD</p>
-            <form onSubmit={buy ? handleBuy : handleSell}>
+            <p>Total Cash: $ {profile?.cash?.toFixed(2)} USD</p>
+            <form onSubmit={handleOrder}>
                 <TextField
                     required
                     label="Quantity"

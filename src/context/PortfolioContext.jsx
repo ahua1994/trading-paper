@@ -38,39 +38,56 @@ const PortfolioContextProvider = ({ children }) => {
         }
     };
 
-    const purchase = async order => {
-        if (!order?.uid) {
-            toast("Login To Purchase", toastStyle);
-            return navigate("/login");
-        }
+    const action = async (order, buy) => {
         try {
-            const docRef = doc(db, "portfolios", order.uid);
+            const docRef = doc(db, "portfolios", auth.currentUser.uid);
             //use arrayUnion,arrayRemove, increment <-- can add or sub
-            // const profile = (await getDoc(docRef)).data();
-            // console.log(profile);
-            console.log(order);
+            const profile = (await getDoc(docRef)).data();
+            let assets = [...profile.assets];
+            let index = assets.findIndex(x => x.symbol === order.symbol);
+            if (index !== -1) {
+                console.log(assets);
+                if (!buy && assets[index].quantity < order.quantity) {
+                    return toast.error(
+                        "Insufficient Stock In Your Portfolio. Please Review Your Order.",
+                        toastStyle
+                    );
+                } else if (!buy && assets[index].quantity === order.quantity) {
+                    assets.splice(index, 1);
+                } else {
+                    assets[index].total += buy ? order.total : order.total * -1;
+                    assets[index].quantity += buy ? order.quantity : order.quantity * -1;
+                }
+            } else if (!buy) {
+                return toast.error(
+                    "Insufficient Stock In Your Portfolio. Please Review Your Order.",
+                    toastStyle
+                );
+            }
             await updateDoc(docRef, {
-                assets: arrayUnion({
-                    symbol: order.symbol,
-                    name: order.name,
-                    currency: order.currency,
-                    total: order.total,
-                    quantity: order.quantity,
-                }),
+                assets:
+                    index !== -1
+                        ? assets
+                        : arrayUnion({
+                              symbol: order.symbol,
+                              name: order.name,
+                              currency: order.currency,
+                              total: order.total,
+                              quantity: order.quantity,
+                          }),
                 transactions: arrayUnion({ ...order }),
-                cash: increment(order.total * -1),
+                cash: increment(buy ? order.total * -1 : order.total),
             });
         } catch (err) {
             return toast.error(err.message.replace("Firebase:", ""), toastStyle);
         }
+        getPortfolio();
         return toast.success("Order Placed!", toastStyle);
     };
 
-    const sell = () => {};
-
     return (
         <PortfolioContext.Provider
-            value={{ purchase, sell, open, setOpen, toastStyle, getPortfolio, profile }}
+            value={{ action, open, setOpen, toastStyle, getPortfolio, profile }}
         >
             {children}
         </PortfolioContext.Provider>
