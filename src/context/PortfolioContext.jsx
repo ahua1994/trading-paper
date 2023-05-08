@@ -1,15 +1,8 @@
 import { toast } from "react-toastify";
 import { db, auth } from "../helpers/firebase";
 import { createContext, useState } from "react";
-import {
-    getDoc,
-    doc,
-    deleteDoc,
-    onSnapshot,
-    updateDoc,
-    arrayUnion,
-    increment,
-} from "firebase/firestore";
+import { getDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { updateDoc, arrayUnion, increment } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 export const PortfolioContext = createContext();
@@ -19,6 +12,7 @@ const PortfolioContextProvider = ({ children }) => {
 
     const [open, setOpen] = useState(false);
     const [profile, setProfile] = useState({});
+    const [price, setPrice] = useState(0);
 
     const toastStyle = {
         position: "top-center",
@@ -38,6 +32,14 @@ const PortfolioContextProvider = ({ children }) => {
         }
     };
 
+    const getCurrentPrice = async symbol => {
+        fetch(
+            `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.REACT_APP_FINNHUB_KEY}`
+        )
+            .then(x => x.json())
+            .then(x => setPrice(+x.c));
+    };
+
     const action = async (order, buy) => {
         try {
             const docRef = doc(db, "portfolios", auth.currentUser.uid);
@@ -46,7 +48,6 @@ const PortfolioContextProvider = ({ children }) => {
             let assets = [...profile.assets];
             let index = assets.findIndex(x => x.symbol === order.symbol);
             if (index !== -1) {
-                console.log(assets);
                 if (!buy && assets[index].quantity < order.quantity) {
                     return toast.error(
                         "Insufficient Stock In Your Portfolio. Please Review Your Order.",
@@ -82,12 +83,22 @@ const PortfolioContextProvider = ({ children }) => {
             return toast.error(err.message.replace("Firebase:", ""), toastStyle);
         }
         getPortfolio();
+        navigate("/portfolio");
         return toast.success("Order Placed!", toastStyle);
     };
 
     return (
         <PortfolioContext.Provider
-            value={{ action, open, setOpen, toastStyle, getPortfolio, profile }}
+            value={{
+                action,
+                open,
+                setOpen,
+                toastStyle,
+                getPortfolio,
+                profile,
+                price,
+                getCurrentPrice,
+            }}
         >
             {children}
         </PortfolioContext.Provider>

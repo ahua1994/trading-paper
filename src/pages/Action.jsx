@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 const Action = () => {
     const { open, action, getPortfolio, profile, toastStyle } = useContext(PortfolioContext);
     const { currentUser } = useContext(AuthContext);
-    const [buying, setBuying] = useState(false);
+    const [confirm, setConfirm] = useState(false);
     const [qty, setQty] = useState("");
 
     const location = useLocation();

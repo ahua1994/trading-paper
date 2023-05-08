@@ -11,10 +11,9 @@ import { toast } from "react-toastify";
 const StockData = () => {
     const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
-    const { open, toastStyle } = useContext(PortfolioContext);
+    const { open, toastStyle, price, getCurrentPrice } = useContext(PortfolioContext);
     const { symbol } = useParams();
     const [quote, setQuote] = useState();
-    const [price, setPrice] = useState(0);
 
     useEffect(() => {
         fetch(
@@ -22,11 +21,12 @@ const StockData = () => {
         )
             .then(x => x.json())
             .then(x => setQuote(x.status === "error" ? null : x));
-        fetch(
-            `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${process.env.REACT_APP_TWELVEDATA_KEY}&source=docs`
-        )
-            .then(x => x.json())
-            .then(x => setPrice(+x.price));
+        getCurrentPrice(symbol);
+        // fetch(
+        //     `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${process.env.REACT_APP_TWELVEDATA_KEY}&source=docs`
+        // )
+        //     .then(x => x.json())
+        //     .then(x => setPrice(+x.price));
     }, []);
 
     const red = "rgb(255, 50, 50)";
@@ -35,7 +35,7 @@ const StockData = () => {
 
     return (
         <div className="StockData" style={{ marginLeft: open ? "240px" : "0" }}>
-            {quote && (
+            {quote ? (
                 <>
                     <div className="stats">
                         <p> {new Date(quote.datetime).toDateString()}</p>
@@ -121,6 +121,12 @@ const StockData = () => {
                         </Link>
                     </div>
                 </>
+            ) : (
+                <h2 className="err">
+                    This page relies on an API that provides data for US Stocks only and is limited
+                    to 8 calls/min and 800 calls/day. Please check again later. Sorry for the
+                    inconvenience.
+                </h2>
             )}
             <Button variant="contained" color="secondary" onClick={() => navigate("/quotes")}>
                 Go Back

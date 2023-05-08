@@ -1,4 +1,4 @@
-.History{   
+.History{    
     transition: ease 0.3s;
     h4{
         margin: 2rem 0; 
@@ -6,12 +6,30 @@
     .MuiTableContainer-root{ 
         display: flex;
         justify-content: center;
+        overflow-x: auto;
         background-color: #03222c; 
-        box-shadow: none;
+        box-shadow: none; 
         .MuiTable-root{
             border-radius: 5px;
             overflow: hidden;
-            width: 50%; 
+            width: 65%; 
         } 
     } 
+    select,select:focus{
+        background-color: white;
+        color:black;
+    }
+}
+
+@media screen and (max-width:1830px) {
+    .History{
+        .MuiTableContainer-root{
+            .MuiTable-root{
+                width: 75%;
+                .MuiTableCell-root{
+                    padding: 4px;
+                }
+            }
+        }
+    }
 }

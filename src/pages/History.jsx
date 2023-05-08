@@ -1,5 +1,4 @@
 import "./History.scss";
-import * as React from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
@@ -20,6 +19,8 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { Typography } from "@mui/material";
 import { PortfolioContext } from "../context/PortfolioContext";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -118,34 +119,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function createData(name, calories, fat) {
-    return { name, calories, fat };
-}
-
-const rows = [
-    createData("Cupcake", 305, 3.7),
-    createData("Donut", 452, 25.0),
-    createData("Eclair", 262, 16.0),
-    createData("Frozen yoghurt", 159, 6.0),
-    createData("Gingerbread", 356, 16.0),
-    createData("Honeycomb", 408, 3.2),
-    createData("Ice cream sandwich", 237, 9.0),
-    createData("Jelly Bean", 375, 0.0),
-    createData("KitKat", 518, 26.0),
-    createData("Lollipop", 392, 0.2),
-    createData("Marshmallow", 318, 0),
-    createData("Nougat", 360, 19.0),
-    createData("Oreo", 437, 18.0),
-];
-// .sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
 export default function History() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const { open } = React.useContext(PortfolioContext);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const { currentUser } = useContext(AuthContext);
+    const { open, profile, getPortfolio } = useContext(PortfolioContext);
+
+    useEffect(() => {
+        getPortfolio();
+    }, [currentUser]);
+
+    const history = profile?.transactions;
 
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - history?.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -160,43 +147,51 @@ export default function History() {
         <div className="History" style={{ marginLeft: open ? "240px" : "0" }}>
             <Typography variant="h4">Transaction History</Typography>
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+                <Table aria-label="custom pagination table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                            <StyledTableCell align="right">Calories</StyledTableCell>
-                            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                            <StyledTableCell>Company</StyledTableCell>
+                            <StyledTableCell align="right">Symbol</StyledTableCell>
+                            <StyledTableCell align="right">Quantity</StyledTableCell>
+                            <StyledTableCell align="right">Price</StyledTableCell>
+                            <StyledTableCell align="right">Total</StyledTableCell>
+                            <StyledTableCell align="right">Type</StyledTableCell>
+                            <StyledTableCell align="center">Date</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {(rowsPerPage > 0
-                            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            : rows
-                        ).map(row => (
-                            <StyledTableRow key={row.name}>
+                            ? history?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : history
+                        )?.map((x, i) => (
+                            <StyledTableRow key={i}>
                                 <StyledTableCell component="th" scope="row">
-                                    {row.name}
+                                    {x.name}
                                 </StyledTableCell>
                                 <StyledTableCell style={{ width: 160 }} align="right">
-                                    {row.calories}
+                                    {x.symbol}
                                 </StyledTableCell>
                                 <StyledTableCell style={{ width: 160 }} align="right">
-                                    {row.fat}
+                                    {x.quantity}
                                 </StyledTableCell>
                                 <StyledTableCell style={{ width: 160 }} align="right">
-                                    0
+                                    {x.price.toFixed(2)}
                                 </StyledTableCell>
                                 <StyledTableCell style={{ width: 160 }} align="right">
-                                    0
+                                    {x.total.toFixed(2)}
+                                </StyledTableCell>
+                                <StyledTableCell style={{ width: 160 }} align="right">
+                                    {x.action.toUpperCase()}
+                                </StyledTableCell>
+                                <StyledTableCell component="th" scope="row" align="right">
+                                    {x.date}
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
 
                         {emptyRows > 0 && (
                             <StyledTableRow style={{ height: 53 * emptyRows }}>
-                                <StyledTableCell colSpan={6} />
+                                <StyledTableCell colSpan={7} />
                             </StyledTableRow>
                         )}
                     </TableBody>
@@ -204,8 +199,8 @@ export default function History() {
                         <StyledTableRow>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                                colSpan={6}
-                                count={rows.length}
+                                colSpan={7}
+                                count={history?.length || 0}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 SelectProps={{
