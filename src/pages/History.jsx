@@ -19,6 +19,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { Typography } from "@mui/material";
 import { PortfolioContext } from "../context/PortfolioContext";
+import getSymbolFromCurrency from "currency-symbol-map";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -123,13 +124,13 @@ export default function History() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const { currentUser } = useContext(AuthContext);
-    const { open, profile, getPortfolio } = useContext(PortfolioContext);
+    const { open, profile, getPortfolio, setProfile } = useContext(PortfolioContext);
 
     useEffect(() => {
-        getPortfolio();
+        currentUser ? getPortfolio() : setProfile({});
     }, [currentUser]);
 
-    const history = profile?.transactions;
+    const history = profile?.transactions?.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - history?.length) : 0;
@@ -175,10 +176,10 @@ export default function History() {
                                     {x.quantity}
                                 </StyledTableCell>
                                 <StyledTableCell style={{ width: 160 }} align="right">
-                                    {x.price.toFixed(2)}
+                                    {getSymbolFromCurrency(x.currency)} {x.price.toFixed(2)}
                                 </StyledTableCell>
                                 <StyledTableCell style={{ width: 160 }} align="right">
-                                    {x.total.toFixed(2)}
+                                    {getSymbolFromCurrency(x.currency)} {x.total.toFixed(2)}
                                 </StyledTableCell>
                                 <StyledTableCell style={{ width: 160 }} align="right">
                                     {x.action.toUpperCase()}

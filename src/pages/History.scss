@@ -9,11 +9,20 @@
         overflow-x: auto;
         background-color: #03222c; 
         box-shadow: none; 
+        margin-bottom: 4rem;
         .MuiTable-root{
             border-radius: 5px;
             overflow: hidden;
             width: 65%; 
+            tr{
+                th{
+                    white-space: nowrap;
+                }
+            }
         } 
+        .MuiToolbar-root{
+            width: 100px;
+        }
     } 
     select,select:focus{
         background-color: white;
@@ -21,14 +30,30 @@
     }
 }
 
-@media screen and (max-width:1830px) {
+@media screen and (max-width:1600px) {
+    .History{
+        .MuiTableContainer-root{ 
+            .MuiTable-root{
+                width: 75%;  
+            }
+        }
+    }
+}
+@media screen and (max-width:1130px) {
+    .History{
+        .MuiTableContainer-root{ 
+            .MuiTable-root{
+                width: 85%; 
+            }
+        }
+    }
+}
+@media screen and (max-width:800px) {
     .History{
         .MuiTableContainer-root{
+            justify-content: flex-start;
             .MuiTable-root{
-                width: 75%;
-                .MuiTableCell-root{
-                    padding: 4px;
-                }
+                width: 85%; 
             }
         }
     }

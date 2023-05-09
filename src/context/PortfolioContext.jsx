@@ -95,6 +95,7 @@ const PortfolioContextProvider = ({ children }) => {
                 setOpen,
                 toastStyle,
                 getPortfolio,
+                setProfile,
                 profile,
                 price,
                 getCurrentPrice,

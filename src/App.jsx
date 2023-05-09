@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DrawerNav from "./components/DrawerNav";
-import NavBar from "./components/NavBar";
 import AuthContextProvider from "./context/AuthContext";
 import PortfolioContextProvider from "./context/PortfolioContext";
 import { ToastContainer } from "react-toastify";
@@ -15,6 +14,8 @@ import Error from "./pages/Error";
 import Home from "./pages/Home";
 import StockData from "./pages/StockData";
 import Action from "./pages/Action";
+import PrivateAuthRouter from "./utils/PrivateAuthRouter";
+import PrivateUnAuthRouter from "./utils/PrivateUnAuthRouter";
 
 function App() {
     return (
@@ -23,7 +24,6 @@ function App() {
                 <AuthContextProvider>
                     <PortfolioContextProvider>
                         <ToastContainer />
-                        {/* <NavBar /> */}
                         <DrawerNav />
                         <Routes>
                             <Route path="/" element={<Home />} />
@@ -31,12 +31,16 @@ function App() {
                                 <Route path=":symbol" element={<StockData />} />
                             </Route>
                             <Route path="/quotes" element={<Quotes />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/register" element={<Register />} />
-                            <Route path="/buy" element={<Action />} />
-                            <Route path="/sell" element={<Action />} />
-                            <Route path="/history" element={<History />} />
-                            <Route path="/portfolio" element={<Portfolio />} />
+                            <Route element={<PrivateUnAuthRouter />}>
+                                <Route path="/login" element={<Login />} />
+                                <Route path="/register" element={<Register />} />
+                            </Route>
+                            <Route element={<PrivateAuthRouter />}>
+                                <Route path="/buy" element={<Action />} />
+                                <Route path="/sell" element={<Action />} />
+                                <Route path="/history" element={<History />} />
+                                <Route path="/portfolio" element={<Portfolio />} />
+                            </Route>
                             <Route path="*" element={<Error />} />
                         </Routes>
                     </PortfolioContextProvider>
