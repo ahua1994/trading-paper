@@ -4,14 +4,11 @@ import getSymbolFromCurrency from "currency-symbol-map";
 import { Button } from "@mui/material";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { PortfolioContext } from "../context/PortfolioContext";
-import { toast } from "react-toastify";
 
 const StockData = () => {
     const navigate = useNavigate();
-    const { currentUser } = useContext(AuthContext);
-    const { open, toastStyle, price, getCurrentPrice } = useContext(PortfolioContext);
+    const { open, price, getCurrentPrice } = useContext(PortfolioContext);
     const { symbol } = useParams();
     const [quote, setQuote] = useState();
 
@@ -22,11 +19,6 @@ const StockData = () => {
             .then(x => x.json())
             .then(x => setQuote(x.status === "error" ? null : x));
         getCurrentPrice(symbol);
-        // fetch(
-        //     `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${process.env.REACT_APP_TWELVEDATA_KEY}&source=docs`
-        // )
-        //     .then(x => x.json())
-        //     .then(x => setPrice(+x.price));
     }, []);
 
     const red = "rgb(255, 50, 50)";
@@ -106,15 +98,12 @@ const StockData = () => {
                         </div>
                     </div>
                     <div className="action">
-                        <Link to={"/buy"} state={{ price: price.toFixed(2), ...quote, buy: true }}>
+                        <Link to="/buy" state={{ price: price.toFixed(2), ...quote, buy: true }}>
                             <Button variant="contained" color="success">
                                 Buy
                             </Button>
                         </Link>
-                        <Link
-                            to={"/sell"}
-                            state={{ price: price.toFixed(2), ...quote, buy: false }}
-                        >
+                        <Link to="/sell" state={{ price: price.toFixed(2), ...quote, buy: false }}>
                             <Button variant="contained" color="error">
                                 Sell
                             </Button>
