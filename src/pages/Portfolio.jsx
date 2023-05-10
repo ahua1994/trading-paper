@@ -1,37 +1,20 @@
 import "./Portfolio.scss";
 import { useContext, useEffect, useState } from "react";
 import { PortfolioContext } from "../context/PortfolioContext";
-import getSymbolFromCurrency from "currency-symbol-map";
 import { AuthContext } from "../context/AuthContext";
 import { Button } from "@mui/material";
+import Asset from "../components/Asset";
 
 const Portfolio = () => {
-    const { open, getPortfolio, profile, setProfile } = useContext(PortfolioContext);
+    const { open, getPortfolio, profile, setProfile, addFunds, reset, assetsTotal } =
+        useContext(PortfolioContext);
     const { currentUser } = useContext(AuthContext);
-    const [values, setValues] = useState([]);
 
     useEffect(() => {
         currentUser ? getPortfolio() : setProfile({});
     }, [currentUser]);
 
-    const assetsTotal = profile?.assets?.reduce((acc, x) => acc + x.total, 0);
-
-    // const getValue = async () => {
-    //     let symbols = profile?.assets?.map(x => x.symbol);
-    //     let list = await symbols?.map(x =>
-    //         fetch(
-    //             `https://finnhub.io/api/v1/quote?symbol=${x}&token=${process.env.REACT_APP_FINNHUB_KEY}`
-    //         )
-    //             .then(x => x.json())
-    //             .then(x => x.c)
-    //     );
-    //     console.log(list);
-    //     setValues(list);
-    // };
-
-    useEffect(() => {
-        getValue();
-    }, []);
+    console.log(assetsTotal);
 
     return (
         <div className="Portfolio" style={{ marginLeft: open ? "240px" : "0" }}>
@@ -41,16 +24,22 @@ const Portfolio = () => {
             <hr />
             <h1>US Holdings</h1>
             {profile?.assets?.map((x, i) => (
-                <div key={i}>
-                    <p>
-                        {x.symbol} {x.name} {x.quantity} shares {getSymbolFromCurrency(x.currency)}
-                        {x.total.toFixed(2)} {x.currency}
-                    </p>
-                    <p>current: {values && values[i]}</p>
-                </div>
+                <Asset key={i} x={x} />
             ))}
             <p>total: $ {assetsTotal?.toFixed(2)}</p>
-            <Button variant="contained" color="success">
+
+            <Button
+                variant="contained"
+                color="error"
+                onClick={() => window.confirm("Completely Reset Your Account?") && reset()}
+            >
+                Reset Profile
+            </Button>
+            <Button
+                variant="contained"
+                color="success"
+                onClick={() => addFunds(assetsTotal + profile?.cash)}
+            >
                 Add Funds
             </Button>
         </div>

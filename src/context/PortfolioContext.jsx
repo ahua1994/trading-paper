@@ -1,8 +1,7 @@
 import { toast } from "react-toastify";
 import { db, auth } from "../helpers/firebase";
 import { createContext, useState } from "react";
-import { getDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";
-import { updateDoc, arrayUnion, increment } from "firebase/firestore";
+import { getDoc, doc, updateDoc, arrayUnion, increment } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 export const PortfolioContext = createContext();
@@ -12,6 +11,7 @@ const PortfolioContextProvider = ({ children }) => {
 
     const [open, setOpen] = useState(false);
     const [profile, setProfile] = useState({});
+    const [assetsTotal, setAssetsTotal] = useState(0);
     const [price, setPrice] = useState(0);
 
     const toastStyle = {
@@ -87,6 +87,36 @@ const PortfolioContextProvider = ({ children }) => {
         return toast.success("Order Placed!", toastStyle);
     };
 
+    const addFunds = async total => {
+        if (total >= 1000)
+            return toast.error("Funds only available below $1000 USD total assets", toastStyle);
+        const docRef = doc(db, "portfolios", auth.currentUser.uid);
+        try {
+            await updateDoc(docRef, {
+                cash: increment(10000),
+            });
+        } catch (err) {
+            return toast.error(err.message.replace("Unable To Add Funds"), toastStyle);
+        }
+        getPortfolio();
+        return toast.success("Added Funds!", toastStyle);
+    };
+
+    const reset = async () => {
+        const docRef = doc(db, "portfolios", auth.currentUser.uid);
+        try {
+            await updateDoc(docRef, {
+                cash: 10000,
+                assets: [],
+                transactions: [],
+            });
+        } catch (err) {
+            return toast.error(err.message.replace("Unable To Reset Account"), toastStyle);
+        }
+        getPortfolio();
+        return toast.success("Your account has been reset", toastStyle);
+    };
+
     return (
         <PortfolioContext.Provider
             value={{
@@ -99,6 +129,10 @@ const PortfolioContextProvider = ({ children }) => {
                 profile,
                 price,
                 getCurrentPrice,
+                addFunds,
+                reset,
+                assetsTotal,
+                setAssetsTotal,
             }}
         >
             {children}
