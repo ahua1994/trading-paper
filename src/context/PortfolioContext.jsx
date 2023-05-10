@@ -11,7 +11,7 @@ const PortfolioContextProvider = ({ children }) => {
 
     const [open, setOpen] = useState(false);
     const [profile, setProfile] = useState({});
-    const [assetsTotal, setAssetsTotal] = useState(0);
+    const [assetsTotal, setAssetsTotal] = useState({});
     const [price, setPrice] = useState(0);
 
     const toastStyle = {

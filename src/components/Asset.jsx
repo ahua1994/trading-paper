@@ -12,7 +12,10 @@ const Asset = ({ x }) => {
             `https://finnhub.io/api/v1/quote?symbol=${x.symbol}&token=${process.env.REACT_APP_FINNHUB_KEY}`
         )
             .then(data => data.json())
-            .then(data => setValue(data.c));
+            .then(data => {
+                setAssetsTotal({ [`${x.symbol}`]: data.c * x.quantity, ...assetsTotal });
+                setValue(data.c);
+            });
     }, []);
 
     return (

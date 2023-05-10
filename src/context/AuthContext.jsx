@@ -12,7 +12,7 @@ import {
     signOut,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 
 export const AuthContext = createContext();
 
