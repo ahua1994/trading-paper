@@ -13,12 +13,11 @@
             .right{
                 display: flex;
                 p {
-                    margin-left: 1rem; 
+                    margin-left: 1rem;  
+                } 
+                svg,.logout{
                     cursor: pointer;
-                }
-                svg{
-                    cursor: pointer;
-                }
+                } 
             }
         }
     }
@@ -30,5 +29,19 @@
         svg{
             color: white;
         } 
+    }
+}
+
+@media screen and (max-width:800px){
+    .DrawerNav{
+        .MuiAppBar-root{
+            .MuiToolbar-root{
+                .right{
+                    .welcome{
+                        display: none;
+                    }
+                }
+            }
+        }
     }
 }

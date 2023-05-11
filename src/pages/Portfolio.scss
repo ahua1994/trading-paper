@@ -1,3 +1,10 @@
 .Portfolio{
     transition: ease 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .heading{
+        width: 30%;
+    }  
 }

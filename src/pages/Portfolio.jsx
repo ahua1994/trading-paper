@@ -1,5 +1,5 @@
 import "./Portfolio.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { PortfolioContext } from "../context/PortfolioContext";
 import { AuthContext } from "../context/AuthContext";
 import { Button } from "@mui/material";
@@ -10,25 +10,24 @@ const Portfolio = () => {
         useContext(PortfolioContext);
     const { currentUser } = useContext(AuthContext);
     const [assetsTotal, setAssetsTotal] = useState({});
+    let obj = useRef({});
 
     useEffect(() => {
         currentUser ? getPortfolio() : setProfile({});
     }, [currentUser]);
 
-    let obj = {};
     useEffect(() => {
         profile?.assets?.map(x =>
             fetch(
                 `https://finnhub.io/api/v1/quote?symbol=${x.symbol}&token=${process.env.REACT_APP_FINNHUB_KEY}`
             )
                 .then(data => data.json())
-                .then(data => (obj[x.symbol] = data.c * x.quantity))
+                .then(data => (obj.current[x.symbol] = data.c * x.quantity))
         );
-        setAssetsTotal(obj);
-        console.log(obj);
+        setAssetsTotal(obj.current);
     }, []);
 
-    // total assets almost works, not reliable
+    // total assets works sometimes, not reliable
     // maybe make state that triggers rerender if no values
 
     const totals = Object.values(assetsTotal);
@@ -36,29 +35,33 @@ const Portfolio = () => {
     console.log(assetsTotal);
     return (
         <div className="Portfolio" style={{ marginLeft: open ? "240px" : "0" }}>
-            <h1> Portfolio</h1>
-            <p>cash: $ {profile?.cash?.toFixed(2)}</p>
-            <p>total assets: $ {(fullValue + profile?.cash)?.toFixed(2)}</p>
-            <h1>US Holdings</h1>
+            <div className="heading">
+                <h1> Portfolio</h1>
+                <p>Cash: $ {profile?.cash?.toFixed(2)}</p>
+                <p>Investments: $ {fullValue?.toFixed(2)}</p>
+                <p>Total Assets: $ {(fullValue + profile?.cash)?.toFixed(2)}</p>
+                <h1>US Holdings</h1>
+                <hr />
+            </div>
             {profile?.assets?.map((x, i) => (
                 <Asset key={i} x={x} value={assetsTotal[x.symbol]} />
             ))}
-            <p>total: $ {fullValue?.toFixed(2)}</p>
-
-            <Button
-                variant="contained"
-                color="error"
-                onClick={() => window.confirm("Completely Reset Your Account?") && reset()}
-            >
-                Reset Profile
-            </Button>
-            <Button
-                variant="contained"
-                color="success"
-                onClick={() => addFunds(fullValue + profile?.cash)}
-            >
-                Add Funds
-            </Button>
+            <div className="buttons">
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => window.confirm("Completely Reset Your Account?") && reset()}
+                >
+                    Reset Profile
+                </Button>
+                <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => addFunds(fullValue + profile?.cash)}
+                >
+                    Add Funds
+                </Button>
+            </div>
         </div>
     );
 };

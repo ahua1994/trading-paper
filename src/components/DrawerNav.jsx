@@ -64,20 +64,6 @@ export default function PersistentDrawerLeft() {
 
     useEffect(() => userObserver(setCurrentUser), []);
 
-    // useEffect(() => {
-    //     const updateViewport = () => {
-    //         const viewport = document.querySelector('meta[name="viewport"]');
-    //         console.log(viewport);
-    //         if (viewport) {
-    //             viewport.setAttribute(
-    //                 "content",
-    //                 `width=${open ? `${window.innerWidth - drawerWidth}` : "device-width"}`
-    //             );
-    //         }
-    //     };
-    //     updateViewport();
-    // }, [open]);
-
     const navigate = useNavigate();
 
     const handleDrawerOpen = () => {
@@ -114,11 +100,12 @@ export default function PersistentDrawerLeft() {
                     </div>
                     {currentUser ? (
                         <div className="right">
-                            <Typography sx={{ marginRight: "1rem" }}>
+                            <Typography sx={{ marginRight: "1rem" }} className="welcome">
                                 Welcome, {currentUser.displayName} !
                             </Typography>
-                            <AccountCircle />
+                            <AccountCircle onClick={() => navigate("/portfolio")} />
                             <Typography
+                                className="logout"
                                 onClick={() => {
                                     logout();
                                     navigate("/");
