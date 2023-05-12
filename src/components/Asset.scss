@@ -1,4 +1,7 @@
 .Asset{
-    width: 30%; 
-    background-color: gray; 
+    width: 30%;  
+    .assetgrid{
+        display: grid;
+        grid-template-columns: 1fr 1fr;  
+    }
 }
