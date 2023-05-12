@@ -3,5 +3,11 @@
     .assetgrid{
         display: grid;
         grid-template-columns: 1fr 1fr;  
+        p:nth-child(odd){
+            text-align: left;
+        }
+        p:nth-child(even){
+            text-align: center;
+        }
     }
 }

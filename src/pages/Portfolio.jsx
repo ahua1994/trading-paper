@@ -11,22 +11,25 @@ const Portfolio = () => {
         useContext(PortfolioContext);
     const { currentUser } = useContext(AuthContext);
     const [assetsTotal, setAssetsTotal] = useState({});
+    const [render, setRender] = useState(false);
     let obj = useRef({});
 
     useEffect(() => {
         currentUser ? getPortfolio() : setProfile({});
     }, [currentUser]);
 
-    // useEffect(() => {
-    //     profile?.assets?.map(x =>
-    //         fetch(
-    //             `https://finnhub.io/api/v1/quote?symbol=${x.symbol}&token=${process.env.REACT_APP_FINNHUB_KEY}`
-    //         )
-    //             .then(data => data.json())
-    //             .then(data => (obj.current[x.symbol] = data.c * x.quantity))
-    //     );
-    //     setAssetsTotal(obj.current);
-    // }, []);
+    useEffect(() => {
+        profile?.assets?.map(x =>
+            fetch(
+                `https://finnhub.io/api/v1/quote?symbol=${x.symbol}&token=${process.env.REACT_APP_FINNHUB_KEY}`
+            )
+                .then(data => data.json())
+                .then(data => (obj.current[x.symbol] = data.c * x.quantity))
+        );
+        setAssetsTotal(obj.current);
+        console.log(totals);
+        if (profile?.assets?.length !== totals.length) setRender(!render);
+    }, [render]);
 
     // useEffect(() => {
     //     const stocks = profile.assets;
@@ -54,10 +57,9 @@ const Portfolio = () => {
     // total assets works sometimes, not reliable
     // maybe make state that triggers rerender if no values
 
-    console.log(obj.current);
-
     const totals = Object.values(assetsTotal);
     const fullValue = totals.length !== 0 ? totals.reduce((acc, x) => acc + x) : 0;
+    console.log(obj.current);
 
     return (
         <div className="Portfolio" style={{ marginLeft: open ? "240px" : "0" }}>
