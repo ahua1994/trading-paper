@@ -82,7 +82,7 @@ const StockData = () => {
                             <p>Open </p>
                             <p>{(+quote.open).toFixed(2)}</p>
                             <p>Close </p>
-                            <p>{(+quote.close).toFixed(2)}</p>
+                            <p>{quote.is_market_open ? "N/A" : (+quote.close).toFixed(2)}</p>
                             <p>Prev Close </p>
                             <p>{(+quote.previous_close).toFixed(2)}</p>
                             <p>High </p>

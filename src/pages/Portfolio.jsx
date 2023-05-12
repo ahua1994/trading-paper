@@ -4,7 +4,6 @@ import { PortfolioContext } from "../context/PortfolioContext";
 import { AuthContext } from "../context/AuthContext";
 import { Button } from "@mui/material";
 import Asset from "../components/Asset";
-import axios from "axios";
 
 const Portfolio = () => {
     const { open, getPortfolio, profile, setProfile, addFunds, reset } =
@@ -27,39 +26,16 @@ const Portfolio = () => {
                 .then(data => (obj.current[x.symbol] = data.c * x.quantity))
         );
         setAssetsTotal(obj.current);
-        console.log(totals);
-        if (profile?.assets?.length !== totals.length) setRender(!render);
+
+        const interval = setInterval(() => {
+            if (profile?.assets?.length !== totals.length) setRender(!render);
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, [render]);
-
-    // useEffect(() => {
-    //     const stocks = profile.assets;
-    //     stocks.length !== 0 &&
-    //         axios
-    //             .all(
-    //                 stocks.map(x =>
-    //                     axios.get(
-    //                         `https://finnhub.io/api/v1/quote?symbol=${x.symbol}&token=${process.env.REACT_APP_FINNHUB_KEY}`
-    //                     )
-    //                 )
-    //             )
-    //             .then(
-    //                 axios.spread((...res) =>
-    //                     res.map(
-    //                         (x, i) =>
-    //                             (obj.current[stocks[i].symbol] = x.data.c * stocks[i].quantity)
-    //                     )
-    //                 )
-    //             )
-    //             .catch(err => console.log(err));
-    //     setAssetsTotal(obj.current);
-    // }, []);
-
-    // total assets works sometimes, not reliable
-    // maybe make state that triggers rerender if no values
 
     const totals = Object.values(assetsTotal);
     const fullValue = totals.length !== 0 ? totals.reduce((acc, x) => acc + x) : 0;
-    console.log(obj.current);
 
     return (
         <div className="Portfolio" style={{ marginLeft: open ? "240px" : "0" }}>
