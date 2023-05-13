@@ -124,10 +124,10 @@ export default function History() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const { currentUser } = useContext(AuthContext);
-    const { open, profile, getPortfolio, setProfile } = useContext(PortfolioContext);
+    const { open, profile, getPortfolio } = useContext(PortfolioContext);
 
     useEffect(() => {
-        currentUser ? getPortfolio() : setProfile({});
+        getPortfolio();
     }, [currentUser]);
 
     const history = profile?.transactions?.sort((a, b) => new Date(b.date) - new Date(a.date));

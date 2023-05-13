@@ -16,6 +16,7 @@ import StockData from "./pages/StockData";
 import Action from "./pages/Action";
 import PrivateAuthRouter from "./utils/PrivateAuthRouter";
 import PrivateUnAuthRouter from "./utils/PrivateUnAuthRouter";
+import Charts from "./pages/Charts";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                                 <Route path=":symbol" element={<StockData />} />
                             </Route>
                             <Route path="/quotes" element={<Quotes />} />
+                            <Route path="/charts" element={<Charts />}></Route>
                             <Route element={<PrivateUnAuthRouter />}>
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/register" element={<Register />} />

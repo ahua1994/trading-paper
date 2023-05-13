@@ -60,7 +60,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export default function PersistentDrawerLeft() {
     const theme = useTheme();
     const { currentUser, logout, userObserver, setCurrentUser } = useContext(AuthContext);
-    const { open, setOpen } = useContext(PortfolioContext);
+    const { open, setOpen, setProfile } = useContext(PortfolioContext);
 
     useEffect(() => userObserver(setCurrentUser), []);
 
@@ -107,6 +107,7 @@ export default function PersistentDrawerLeft() {
                             <Typography
                                 className="logout"
                                 onClick={() => {
+                                    setProfile({});
                                     logout();
                                     navigate("/");
                                 }}

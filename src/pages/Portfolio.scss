@@ -1,10 +1,23 @@
-.Portfolio{
+.Portfolio {
     transition: ease 0.3s;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .heading{
-        width: 30%;
-    }  
+    .heading {
+        width: 40vw;
+        h1:nth-child(2) {
+            margin-top: 0;
+        }
+        p:nth-child(1) {
+            text-align: left;
+            transform: translateY(-10px);
+            margin: 0;
+        }
+    }
+    .buttons {
+        button {
+            margin: 4rem 2rem;
+        }
+    }
 }

@@ -6,15 +6,14 @@ import { Button } from "@mui/material";
 import Asset from "../components/Asset";
 
 const Portfolio = () => {
-    const { open, getPortfolio, profile, setProfile, addFunds, reset } =
-        useContext(PortfolioContext);
+    const { open, getPortfolio, profile, addFunds, reset } = useContext(PortfolioContext);
     const { currentUser } = useContext(AuthContext);
     const [assetsTotal, setAssetsTotal] = useState({});
     const [render, setRender] = useState(false);
     let obj = useRef({});
 
     useEffect(() => {
-        currentUser ? getPortfolio() : setProfile({});
+        getPortfolio();
     }, [currentUser]);
 
     useEffect(() => {
@@ -40,7 +39,8 @@ const Portfolio = () => {
     return (
         <div className="Portfolio" style={{ marginLeft: open ? "240px" : "0" }}>
             <div className="heading">
-                <h1> Portfolio</h1>
+                <p>{profile.username}</p>
+                <h1>Portfolio</h1>
                 <hr />
                 <p>Cash: $ {profile?.cash?.toFixed(2)} USD</p>
                 <p>Investments: $ {fullValue?.toFixed(2)} USD</p>

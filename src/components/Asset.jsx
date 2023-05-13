@@ -1,5 +1,6 @@
 import "./Asset.scss";
 import getSymbolFromCurrency from "currency-symbol-map";
+import Flag from "react-world-flags";
 
 const Asset = ({ x, value }) => {
     const unrealized = value - x.total;
@@ -8,7 +9,7 @@ const Asset = ({ x, value }) => {
         <div className="Asset">
             <div className="assetgrid">
                 <p>
-                    {x.symbol} {x.name}
+                    <Flag code={"US"} /> {x.symbol} - {x.name}
                 </p>
                 <p> {x.quantity} shares</p>
                 <p>Market Value: </p>

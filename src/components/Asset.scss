@@ -1,5 +1,5 @@
 .Asset{
-    width: 30%;  
+    width: 40vw;  
     .assetgrid{
         display: grid;
         grid-template-columns: 1fr 1fr;  
@@ -8,6 +8,10 @@
         }
         p:nth-child(even){
             text-align: center;
+        }
+        img{
+            width: 30px;
+            transform: translateY(2px);
         }
     }
 }
