@@ -1,0 +1,13 @@
+.Profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: ease 0.3s;
+    .MuiAvatar-root{  
+        text-transform: capitalize;
+        background-color: rgb(179, 0, 0);
+        font-size: 3rem;
+        width: 120px; 
+        height: 120px; 
+    }
+}

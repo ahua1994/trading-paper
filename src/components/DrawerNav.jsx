@@ -103,7 +103,7 @@ export default function PersistentDrawerLeft() {
                             <Typography sx={{ marginRight: "1rem" }} className="welcome">
                                 Welcome, {currentUser.displayName} !
                             </Typography>
-                            <AccountCircle onClick={() => navigate("/portfolio")} />
+                            <AccountCircle onClick={() => navigate("/profile")} />
                             <Typography
                                 className="logout"
                                 onClick={() => {

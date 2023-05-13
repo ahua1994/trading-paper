@@ -17,6 +17,7 @@ import Action from "./pages/Action";
 import PrivateAuthRouter from "./utils/PrivateAuthRouter";
 import PrivateUnAuthRouter from "./utils/PrivateUnAuthRouter";
 import Charts from "./pages/Charts";
+import Profile from "./pages/Profile";
 
 function App() {
     return (
@@ -42,6 +43,7 @@ function App() {
                                 <Route path="/sell" element={<Action />} />
                                 <Route path="/history" element={<History />} />
                                 <Route path="/portfolio" element={<Portfolio />} />
+                                <Route path="/profile" element={<Profile />} />
                             </Route>
                             <Route path="*" element={<Error />} />
                         </Routes>
