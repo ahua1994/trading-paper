@@ -30,7 +30,10 @@ const Quotes = () => {
     };
 
     return (
-        <div className="Quotes" style={{ marginLeft: open ? "240px" : "0" }}>
+        <div
+            className="Quotes"
+            style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
+        >
             <form onSubmit={handleSubmit}>
                 <Typography variant="h4">Quotes</Typography>
                 <TextField

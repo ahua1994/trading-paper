@@ -16,7 +16,10 @@ const Home = () => {
             .then(x => setMarkets(x.markets));
     }, []);
     return (
-        <div className="Home" style={{ marginLeft: open ? "240px" : "0" }}>
+        <div
+            className="Home"
+            style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
+        >
             <h1>Global Market Status</h1>
             <div className="market-status">
                 {markets

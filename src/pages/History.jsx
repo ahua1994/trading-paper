@@ -145,7 +145,10 @@ export default function History() {
     };
 
     return (
-        <div className="History" style={{ marginLeft: open ? "240px" : "0" }}>
+        <div
+            className="History"
+            style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
+        >
             <Typography variant="h4">Transaction History</Typography>
             <TableContainer component={Paper}>
                 <Table aria-label="custom pagination table">

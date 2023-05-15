@@ -35,16 +35,29 @@ const Portfolio = () => {
 
     const totals = Object.values(assetsTotal);
     const fullValue = totals.length !== 0 ? totals.reduce((acc, x) => acc + x) : 0;
+    const bookCosts = profile?.assets?.reduce((acc, x) => acc + x.total, 0);
+    const unrealized = fullValue - bookCosts;
 
     return (
-        <div className="Portfolio" style={{ marginLeft: open ? "240px" : "0" }}>
+        <div
+            className="Portfolio"
+            style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
+        >
             <div className="heading">
-                <p>{profile.username}</p>
-                <h1>Portfolio</h1>
+                <h1>{profile.username}'s Portfolio</h1>
                 <hr />
                 <p>Cash: $ {profile?.cash?.toFixed(2)} USD</p>
                 <p>Investments: $ {fullValue?.toFixed(2)} USD</p>
                 <p>Total Assets: $ {(fullValue + profile?.cash)?.toFixed(2)} USD</p>
+                <p>
+                    Total Unrealized: ${" "}
+                    <span
+                        style={{ color: unrealized > 0 ? "rgb(89, 255, 89)" : "rgb(255, 50, 50)" }}
+                    >
+                        {unrealized.toFixed(2)}
+                    </span>{" "}
+                    USD
+                </p>
                 <hr />
                 <h1>US Holdings</h1>
                 <hr />

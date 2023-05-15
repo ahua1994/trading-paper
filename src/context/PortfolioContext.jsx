@@ -98,7 +98,7 @@ const PortfolioContextProvider = ({ children }) => {
             return toast.error(err.message.replace("Unable To Add Funds"), toastStyle);
         }
         getPortfolio();
-        return toast.success("Added Funds!", toastStyle);
+        return toast.success("$10000 Added To Profile", toastStyle);
     };
 
     const reset = async () => {

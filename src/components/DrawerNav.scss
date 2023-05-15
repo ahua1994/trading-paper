@@ -22,7 +22,7 @@
             }
         }
     }
-    .MuiDrawer-root{
+    .MuiDrawer-root {
         .MuiDrawer-paperAnchorLeft{
             background-color: #051318;
             color: white;
@@ -30,7 +30,16 @@
         svg{
             color: white;
         } 
+    } 
+}
+.MuiDrawer-modal{
+    .MuiDrawer-paperAnchorLeft{
+        background-color: #051318;
+        color: white;
     }
+    svg{
+        color: white;
+    } 
 }
 
 @media screen and (max-width:800px){
@@ -38,6 +47,9 @@
         .MuiAppBar-root{
             .MuiToolbar-root{
                 .right{
+                    p{
+                        margin:1px;
+                    } 
                     .welcome{
                         display: none;
                     }

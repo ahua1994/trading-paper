@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 const Action = () => {
     const { open, action, getPortfolio, profile, toastStyle } = useContext(PortfolioContext);
     const { currentUser } = useContext(AuthContext);
-    const [confirm, setConfirm] = useState(false);
     const [qty, setQty] = useState("");
 
     const location = useLocation();
@@ -27,6 +26,8 @@ const Action = () => {
 
     const handleOrder = e => {
         e.preventDefault();
+        if (!window.confirm(`Confirm ${buy ? "Buy" : "Sell"} ${qty} shares of ${quote?.symbol}`))
+            return;
         let total = Number((quote?.price * +qty).toFixed(2));
         if (buy && total > profile?.cash) return toast.error("Insufficient Funds", toastStyle);
         let order = {
@@ -43,7 +44,10 @@ const Action = () => {
     };
 
     return (
-        <div className="Action" style={{ marginLeft: open ? "240px" : "0" }}>
+        <div
+            className="Action"
+            style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
+        >
             {buy ? "Buy" : "Sell"}
             <h1>{quote?.symbol}</h1>
             <h3>{quote?.name}</h3>
@@ -62,7 +66,7 @@ const Action = () => {
                 ></TextField>
                 <p>Total Cost: $ {qty !== "" ? (quote?.price * qty).toFixed(2) : 0} USD</p>
                 <Button
-                    onClick={() => window.confirm("Return without placing order?") && navigate(-1)}
+                    onClick={() => window.confirm("Return Without Placing Order?") && navigate(-1)}
                 >
                     Cancel
                 </Button>

@@ -20,7 +20,7 @@ const Asset = ({ x, value }) => {
                     {x.total.toFixed(2)}
                 </p>
                 <p>Unrealized:</p>
-                <p>
+                <p style={{ color: unrealized > 0 ? "rgb(89, 255, 89)" : "rgb(255, 50, 50)" }}>
                     {unrealized.toFixed(2)} ({percent.toFixed(unrealized ? 4 : 2)}%)
                 </p>
             </div>

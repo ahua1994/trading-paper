@@ -26,7 +26,10 @@ const StockData = () => {
     const f2w = quote?.fifty_two_week;
 
     return (
-        <div className="StockData" style={{ marginLeft: open ? "240px" : "0" }}>
+        <div
+            className="StockData"
+            style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
+        >
             {quote ? (
                 <>
                     <div className="stats">

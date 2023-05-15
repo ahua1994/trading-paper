@@ -28,7 +28,10 @@ const Login = () => {
     }, []);
 
     return (
-        <div className="Login" style={{ marginLeft: open ? "240px" : "0" }}>
+        <div
+            className="Login"
+            style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
+        >
             {forgot ? (
                 <form
                     onSubmit={e => {

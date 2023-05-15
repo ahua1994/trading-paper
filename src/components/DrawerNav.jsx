@@ -101,7 +101,7 @@ export default function PersistentDrawerLeft() {
                     {currentUser ? (
                         <div className="right">
                             <Typography sx={{ marginRight: "1rem" }} className="welcome">
-                                Welcome, {currentUser.displayName} !
+                                Welcome, {currentUser.displayName}!
                             </Typography>
                             <AccountCircle onClick={() => navigate("/profile")} />
                             <Typography
@@ -136,9 +136,10 @@ export default function PersistentDrawerLeft() {
                         boxSizing: "border-box",
                     },
                 }}
-                variant="persistent"
+                variant={window.innerWidth > 800 ? "persistent" : "temporary"}
                 anchor="left"
                 open={open}
+                onClose={handleDrawerClose}
             >
                 <DrawerHeader sx={{ textAlign: "left", justifyContent: "space-around" }}>
                     <Typography variant="h6" noWrap component="div">
