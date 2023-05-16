@@ -1,11 +1,10 @@
 import "./Home.scss";
 import { useContext, useEffect, useState } from "react";
 import { PortfolioContext } from "../context/PortfolioContext";
-import { AuthContext } from "../context/AuthContext";
 import MarketStatus from "../components/MarketStatus";
+import Disclaimer from "../components/Disclaimer";
 
 const Home = () => {
-    const { currentUser } = useContext(AuthContext);
     const { open } = useContext(PortfolioContext);
     const [markets, setMarkets] = useState([]);
     useEffect(() => {
@@ -20,6 +19,7 @@ const Home = () => {
             className="Home"
             style={{ marginLeft: open && window.innerWidth > 800 ? "240px" : "0" }}
         >
+            <Disclaimer />
             <h1>Global Market Status</h1>
             <div className="market-status">
                 {markets

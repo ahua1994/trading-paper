@@ -39,7 +39,7 @@ const AppBar = styled(MuiAppBar, {
         duration: theme.transitions.duration.leavingScreen,
     }),
     ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
+        width: `calc(100% - ${window.innerWidth > 800 ? drawerWidth : 0}px)`,
         marginLeft: `${drawerWidth}px`,
         transition: theme.transitions.create(["margin", "width"], {
             easing: theme.transitions.easing.easeOut,
@@ -65,6 +65,11 @@ export default function PersistentDrawerLeft() {
     useEffect(() => userObserver(setCurrentUser), []);
 
     const navigate = useNavigate();
+
+    const nav = path => {
+        if (window.innerWidth < 800) setOpen(false);
+        navigate(path);
+    };
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -151,7 +156,7 @@ export default function PersistentDrawerLeft() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <ListItem onClick={() => navigate("/")} disablePadding>
+                    <ListItem onClick={() => nav("/")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <House />
@@ -159,7 +164,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary="Home" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem onClick={() => navigate("/quotes")} disablePadding>
+                    <ListItem onClick={() => nav("/quotes")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <LocalAtm />
@@ -167,7 +172,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary="Quotes" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem onClick={() => navigate("/charts")} disablePadding>
+                    <ListItem onClick={() => nav("/charts")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <ShowChart />
@@ -175,7 +180,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary="Charts" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem onClick={() => navigate("/portfolio")} disablePadding>
+                    <ListItem onClick={() => nav("/portfolio")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <AutoStories />
@@ -183,7 +188,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemText primary="Portfolio" />
                         </ListItemButton>
                     </ListItem>
-                    <ListItem onClick={() => navigate("/history")} disablePadding>
+                    <ListItem onClick={() => nav("/history")} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
                                 <AccessTimeFilled />
@@ -193,18 +198,6 @@ export default function PersistentDrawerLeft() {
                     </ListItem>
                 </List>
                 <Divider />
-                {/* <List>
-                    {["All mail", "Trash", "Spam"].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List> */}
             </Drawer>
         </Box>
     );
