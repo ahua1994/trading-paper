@@ -61,7 +61,7 @@ const Action = () => {
                 <div>
                     <h1 className="success">Success!</h1>
                     <CheckCircleOutlineIcon sx={{ fontSize: "240px", color: "green" }} />
-                    <h1>Your order has been placed</h1>
+                    <h1>Your order has been placed!</h1>
                     <div className="buttons">
                         <Button variant="outlined" onClick={() => nav("/")}>
                             Back To Home

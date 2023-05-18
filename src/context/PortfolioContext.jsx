@@ -79,6 +79,7 @@ const PortfolioContextProvider = ({ children }) => {
         } catch (err) {
             return toast.error(err.message.replace("Firebase:", ""), toastStyle);
         }
+        getPortfolio();
         return setPlaced(true);
     };
 
