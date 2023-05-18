@@ -1,6 +1,37 @@
 .Action{
+    margin-top: 3rem;
+    transition: ease 0.3s;
+    .success{
+        margin-bottom: 1rem;
+    }
+    h1{
+        margin-bottom: 0;
+    }
+    h3{
+        margin-top: 0;
+        margin-bottom: 2rem;
+    } 
     .MuiTextField-root  { 
         background-color:white;
-        border-radius: 5px;
+        border-radius: 5px; 
+        margin:1rem 0;
+    }
+    button{
+        margin: 0 1rem;
+    }
+    .buttons{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 2rem;
+        button{
+            display: flex;
+            flex-direction: column;
+            width: 250px;
+            height: 150px;
+            color: goldenrod;
+            border-color: goldenrod; 
+            margin: 10px;
+        }
     }
 }

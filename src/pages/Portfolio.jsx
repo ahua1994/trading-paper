@@ -12,9 +12,15 @@ const Portfolio = () => {
     const [render, setRender] = useState(false);
     let obj = useRef({});
 
+    const totals = Object.values(assetsTotal);
+    const fullValue = totals.length !== 0 ? totals.reduce((acc, x) => acc + x) : 0;
+    const bookCosts = profile?.assets?.reduce((acc, x) => acc + x.total, 0);
+    const unrealized = fullValue - bookCosts;
+
     useEffect(() => {
         getPortfolio();
     }, [currentUser]);
+    console.log(profile);
 
     useEffect(() => {
         profile?.assets?.map(x =>
@@ -32,11 +38,6 @@ const Portfolio = () => {
 
         return () => clearInterval(interval);
     }, [render]);
-
-    const totals = Object.values(assetsTotal);
-    const fullValue = totals.length !== 0 ? totals.reduce((acc, x) => acc + x) : 0;
-    const bookCosts = profile?.assets?.reduce((acc, x) => acc + x.total, 0);
-    const unrealized = fullValue - bookCosts;
 
     return (
         <div
