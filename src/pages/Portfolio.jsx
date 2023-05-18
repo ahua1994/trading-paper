@@ -20,7 +20,6 @@ const Portfolio = () => {
     useEffect(() => {
         getPortfolio();
     }, [currentUser]);
-    console.log(profile);
 
     useEffect(() => {
         profile?.assets?.map(x =>
