@@ -30,7 +30,6 @@ const Portfolio = () => {
                 .then(data => (obj.current[x.symbol] = data.c * x.quantity))
         );
         setAssetsTotal(obj.current);
-
         const interval = setInterval(() => {
             if (profile?.assets?.length !== totals.length) setRender(!render);
         }, 1000);

@@ -54,6 +54,13 @@ const Disclaimer = () => {
                             any investment decisions.
                         </li>
                         <li>
+                            Limited Exchanges: This web application is currently limited to US
+                            market data, due to the constraints of the free-to-use API plans it is
+                            utilizing. If you are seeking market data from other countries or
+                            regions, we recommend exploring alternative sources that specialize in
+                            global market data.
+                        </li>
+                        <li>
                             Technical Limitations: The paper trading web app may experience
                             technical issues, system failures, or interruptions that are beyond the
                             control of Andy Hua. We cannot guarantee uninterrupted access to the app

@@ -105,12 +105,14 @@ export default function PersistentDrawerLeft() {
                     </div>
                     {currentUser ? (
                         <div className="right">
-                            <Typography sx={{ marginRight: "1rem" }} className="welcome">
+                            <Typography
+                                sx={{ marginRight: "1rem", cursor: "unset" }}
+                                className="welcome"
+                            >
                                 Welcome, {currentUser.displayName}!
                             </Typography>
                             <AccountCircle onClick={() => navigate("/profile")} />
                             <Typography
-                                className="logout"
                                 onClick={() => {
                                     setProfile({});
                                     logout();
